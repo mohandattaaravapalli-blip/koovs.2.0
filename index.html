@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KOOVS — Dark Editorial Streetwear</title>
+  <meta name="description" content="KOOVS — Premium Gen Z Streetwear with a bold, dark cinematic identity. Discover Exclusive Drip and Everyday Apparel." />
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet" />
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="dark-theme has-ticker">
+
+  <!-- ═══════════════════════════════════════════════
+       HEADER NAVIGATION
+       LEFT: ☰ Menu
+       CENTER: KOOVS Logo (Screen Centered)
+       RIGHT: AR Try On | Search | Cart
+  ══════════════════════════════════════════════════ -->
+  <header class="header" id="header">
+    <div class="header__inner">
+
+      <!-- LEFT: MENU BUTTON (ICON ONLY, NO TEXT) -->
+      <div class="header__left">
+        <button class="header__icon-btn" id="menuBtn" aria-label="Open Navigation Menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="8" x2="20" y2="8"></line>
+            <line x1="8" y1="16" x2="20" y2="16"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- CENTER: BRAND LOGO (OFFICIAL UPLOADED LOGO) -->
+      <a href="index.html" class="header__logo-link header__logo-link--centered" aria-label="KOOVS Home">
+        <img src="assets/images/koovs_official_logo.png" alt="KOOVS" class="header__logo-img" />
+      </a>
+
+      <!-- RIGHT: AR TRY ON, SEARCH, CART ICONS -->
+      <div class="header__actions">
+        <!-- AR Try-On Quick Access Button -->
+        <button class="nav-ar-btn" id="navArBtn" aria-label="AR Virtual Try-On">
+          <svg class="nav-ar-btn__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+          <span>AR Try On</span>
+        </button>
+
+        <!-- Search Icon -->
+        <button class="header__icon-btn" id="searchBtn" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+
+        <!-- Cart Icon -->
+        <button class="header__icon-btn header__cart-btn" id="cartBtn" aria-label="Shopping Bag">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="header__cart-badge" id="cartBadge">0</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════
+       MOBILE MENU DRAWER
+  ══════════════════════════════════════════════════ -->
+  <div class="menu-drawer" id="menuDrawer" aria-hidden="true">
+    <div class="menu-drawer__overlay" id="menuDrawerOverlay"></div>
+    <div class="menu-drawer__content">
+      <div class="menu-drawer__header">
+        <a href="index.html" class="menu-drawer__logo-link" aria-label="KOOVS Home">
+          <img src="assets/images/koovs_official_logo.png" alt="KOOVS Logo" class="menu-drawer__logo" />
+        </a>
+        <button class="menu-drawer__close" id="menuDrawerClose" aria-label="Close menu">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <nav class="menu-drawer__links">
+        <a href="index.html" class="menu-drawer__link active">HOME</a>
+        <a href="exclusive-drip.html" class="menu-drawer__link">EXCLUSIVE DRIP</a>
+        <a href="everyday-apparel.html" class="menu-drawer__link highlight-link">EVERYDAY APPAREL</a>
+        <a href="everyday-apparel.html" class="menu-drawer__link">DAILY ESSENTIALS</a>
+        <a href="#" class="menu-drawer__link trigger-ar-modal">AR VIRTUAL FITTING</a>
+      </nav>
+      <div class="menu-drawer__footer">
+        <a href="#" class="menu-drawer__settings-link" id="settingsBtn">
+          <i class="fa-solid fa-gear"></i>
+          <span>Settings</span>
+        </a>
+        <p class="menu-drawer__brand-tag">TOO ODD TO IGNORE.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SCROLLING BRAND ANNOUNCEMENT MARQUEE ("NEW DROP OUT NOW!")
+  ══════════════════════════════════════════════════ -->
+  <aside class="brand-ticker-bar" aria-label="Brand Announcement Ticker">
+    <div class="brand-ticker__track">
+      <span class="brand-ticker__text">NEW DROP OUT NOW! • NEW DROP OUT NOW! • NEW DROP OUT NOW! • NEW DROP OUT NOW! • NEW DROP OUT NOW! • NEW DROP OUT NOW! • NEW DROP OUT NOW! • </span>
+      <span class="brand-ticker__text">NEW DROP OUT NOW! • NEW DROP OUT NOW! • NEW DROP OUT NOW! • NEW DROP OUT NOW! • NEW DROP OUT NOW! • NEW DROP OUT NOW! • NEW DROP OUT NOW! • </span>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════════════════
+       FLOATING BRAND TAGLINE STATEMENT (NO SEPARATE CONTAINER BACKGROUND)
+  ══════════════════════════════════════════════════ -->
+  <div class="floating-tagline">
+    <h2 class="floating-tagline__text font-milker">TOO ODD TO IGNORE.</h2>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       HERO SECTION
+  ══════════════════════════════════════════════════ -->
+  <section class="hero" id="hero">
+    
+    <!-- DARK HERO BACKDROP IMAGE -->
+    <div class="hero__bg-container">
+      <img src="assets/images/hero_bg_dark.jpg" alt="KOOVS Dark Horizon Editorial" class="hero__bg-img" />
+      <div class="hero__bg-overlay"></div>
+    </div>
+
+    <div class="hero__container">
+      
+      <!-- HERO CARDS GRID -->
+      <div class="hero__cards-grid">
+        
+        <!-- CARD 1: EXCLUSIVE DRIP -->
+        <article class="hero-card hero-card--drip" id="cardDrip">
+          <div class="hero-card__image-wrap">
+            <img src="assets/images/exclusive_drip_new.png" alt="Exclusive Drip Campaign" class="hero-card__img" />
+            <div class="hero-card__img-overlay"></div>
+          </div>
+          
+          <div class="hero-card__content">
+            <span class="hero-card__category">LIMITED CAPSULE</span>
+            <h2 class="hero-card__title font-milker">Exclusive Drip</h2>
+            <p class="hero-card__desc">Wear what disappears first.</p>
+            
+            <a href="exclusive-drip.html" class="hero-btn">
+              <span>Explore</span>
+              <svg class="hero-btn__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- CARD 2: EVERYDAY APPAREL -->
+        <article class="hero-card hero-card--everyday" id="cardEveryday">
+          <div class="hero-card__image-wrap">
+            <img src="assets/images/everyday_apparel_landscape.png" alt="Everyday Apparel Campaign" class="hero-card__img hero-card__img--everyday" />
+            <div class="hero-card__img-overlay"></div>
+          </div>
+          
+          <div class="hero-card__content">
+            <span class="hero-card__category">EVERYDAY ESSENTIALS</span>
+            <h2 class="hero-card__title font-milker">Everyday Apparel</h2>
+            <p class="hero-card__desc">Built for every single day.</p>
+            
+            <a href="everyday-apparel.html" class="hero-btn">
+              <span>Shop</span>
+              <svg class="hero-btn__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+        </article>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       "REGISTER FOR OUR NEXT DROP" SUBSCRIPTION SECTION
+  ══════════════════════════════════════════════════ -->
+  <section class="subscribe-section" id="dropSubscribe">
+    <div class="subscribe-container">
+      <h2 class="subscribe-title font-milker">Register for Our Next Drop</h2>
+      <p class="subscribe-subtitle">Be the first to know when the next exclusive KOOVS collection launches.</p>
+      <form class="subscribe-form" id="subscribeForm" onsubmit="event.preventDefault(); alert('You\'re registered for the next exclusive KOOVS drop!');">
+        <input type="email" class="subscribe-input" placeholder="Enter your email address..." required aria-label="Email address" />
+        <button type="submit" class="subscribe-btn">Notify Me</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       MINIMALIST FOOTER
+  ══════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" aria-label="KOOVS Home">
+          <img src="assets/images/koovs_official_logo.png" alt="KOOVS Logo" class="footer-brand-logo" />
+        </a>
+        <p class="footer-tagline">TOO ODD TO IGNORE. Premium streetwear &amp; curated capsule drops.</p>
+      </div>
+
+      <div class="footer-address">
+        <h4 class="footer-block-title">ADDRESS</h4>
+        <p class="footer-text">
+          KOOVS Studio<br />
+          Indiranagar, Bengaluru,<br />
+          Karnataka 560038
+        </p>
+      </div>
+
+      <div class="footer-contact">
+        <h4 class="footer-block-title">CONTACT</h4>
+        <p class="footer-text">
+          Phone: +91 80 4123 4567<br />
+          Email: <a href="mailto:support@koovs.in">support@koovs.in</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 KOOVS. All Rights Reserved.</p>
+      <p>Clean Luxury &amp; Gen Z Streetwear</p>
+    </div>
+
+    <!-- OFFICIAL KOOVS BRAND SIGNOFF -->
+    <div class="footer-signoff-bar">
+      <img src="assets/images/koovs_official_logo.png" alt="KOOVS Official Sign-off Logo" class="footer-signoff-logo" />
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════
+       CAMERA AR TRY-ON MODAL ENGINE
+  ══════════════════════════════════════════════════ -->
+  <div class="ar-modal" id="arModal" aria-hidden="true">
+    <div class="ar-modal__overlay" id="arModalOverlay"></div>
+    <div class="ar-modal__container">
+      <div class="ar-modal__header">
+        <div class="ar-modal__title-wrap">
+          <span class="ar-modal__badge">KOOVS AR ENGINE v2.6</span>
+          <h3 class="ar-modal__title font-milker">Live AR Fitting Room</h3>
+        </div>
+        <button class="ar-modal__close" id="arModalClose" aria-label="Close AR Modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="ar-modal__viewport">
+        <video id="arVideoFeed" autoplay playsinline muted class="ar-modal__video"></video>
+        
+        <div class="ar-modal__reticle" id="arReticle">
+          <div class="ar-modal__reticle-frame"></div>
+          <div class="ar-modal__reticle-scanline"></div>
+          <span class="ar-modal__reticle-text">ALIGN UPPER BODY WITHIN FRAME</span>
+        </div>
+
+        <div class="ar-modal__prompt" id="arPrompt">
+          <i class="fa-solid fa-camera"></i>
+          <p>Requesting camera permission...</p>
+          <span class="ar-modal__prompt-sub">Real-time 3D posture mapping ready for WebXR / Snap Kit integration.</span>
+        </div>
+      </div>
+
+      <div class="ar-modal__controls">
+        <button class="ar-modal__btn" id="arSwitchCameraBtn">
+          <i class="fa-solid fa-camera-rotate"></i>
+          <span>Switch View</span>
+        </button>
+        <button class="ar-modal__btn ar-modal__btn--capture" id="arCaptureBtn">
+          <i class="fa-solid fa-aperture"></i>
+          <span>Snapshot Fit</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="app.js"></script>
+</body>
+</html>

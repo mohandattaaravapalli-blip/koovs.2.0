@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Details — KOOVS Dark Editorial</title>
+  <meta name="description" content="KOOVS Product Details — Discover premium limited edition streetwear with interactive AR Try-On." />
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet" />
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="dark-theme pdp-page">
+
+  <!-- ═══════════════════════════════════════════════
+       HEADER NAVIGATION (STRICT RIGHT-ALIGNED ICONS)
+  ══════════════════════════════════════════════════ -->
+  <header class="header" id="header">
+    <div class="header__inner">
+
+      <!-- LEFT: MENU BUTTON (ICON ONLY, NO TEXT) -->
+      <div class="header__left">
+        <button class="header__icon-btn" id="menuBtn" aria-label="Open Navigation Menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="8" x2="20" y2="8"></line>
+            <line x1="8" y1="16" x2="20" y2="16"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- CENTER: BRAND LOGO (OFFICIAL UPLOADED LOGO) -->
+      <a href="index.html" class="header__logo-link header__logo-link--centered" aria-label="KOOVS Home">
+        <img src="assets/images/koovs_official_logo.png" alt="KOOVS" class="header__logo-img" />
+      </a>
+
+      <!-- RIGHT: AR TRY ON, SEARCH, CART ICONS -->
+      <div class="header__actions">
+        <!-- AR Try-On Quick Access Button -->
+        <button class="nav-ar-btn" id="navArBtn" aria-label="AR Virtual Try-On">
+          <svg class="nav-ar-btn__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+          <span>AR Try On</span>
+        </button>
+
+        <!-- Search Icon -->
+        <button class="header__icon-btn" id="searchBtn" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+
+        <!-- Cart Icon -->
+        <button class="header__icon-btn header__cart-btn" id="cartBtn" aria-label="Shopping Bag">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="header__cart-badge" id="cartBadge">0</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════
+       MOBILE MENU DRAWER
+  ══════════════════════════════════════════════════ -->
+  <div class="menu-drawer" id="menuDrawer" aria-hidden="true">
+    <div class="menu-drawer__overlay" id="menuDrawerOverlay"></div>
+    <div class="menu-drawer__content">
+      <div class="menu-drawer__header">
+        <a href="index.html" class="menu-drawer__logo-link" aria-label="KOOVS Home">
+          <img src="assets/images/koovs_official_logo.png" alt="KOOVS Logo" class="menu-drawer__logo" />
+        </a>
+        <button class="menu-drawer__close" id="menuDrawerClose" aria-label="Close menu">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <nav class="menu-drawer__links">
+        <a href="index.html" class="menu-drawer__link">HOME</a>
+        <a href="exclusive-drip.html" class="menu-drawer__link">EXCLUSIVE DRIP</a>
+        <a href="everyday-apparel.html" class="menu-drawer__link highlight-link">EVERYDAY APPAREL</a>
+        <a href="#" class="menu-drawer__link trigger-ar-modal">AR VIRTUAL FITTING</a>
+      </nav>
+      <div class="menu-drawer__footer">
+        <a href="#" class="menu-drawer__settings-link" id="settingsBtn">
+          <i class="fa-solid fa-gear"></i>
+          <span>Settings</span>
+        </a>
+        <p class="menu-drawer__brand-tag">TOO ODD TO IGNORE.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       PRODUCT DETAIL MAIN CONTENT
+  ══════════════════════════════════════════════════ -->
+  <main class="pdp-main">
+    <div class="pdp-container">
+      
+      <!-- BREADCRUMB -->
+      <nav class="pdp-breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <a href="exclusive-drip.html">Exclusive Drip</a>
+        <span>/</span>
+        <span id="pdpBreadcrumbTitle" class="active">Web-Slinger Heavy Hoodie</span>
+      </nav>
+
+      <div class="pdp-grid">
+
+        <!-- LEFT SIDE: PRODUCT GALLERY (PLACEHOLDER IMAGE & THUMBNAILS) -->
+        <div class="pdp-left">
+          <div class="pdp-gallery-main">
+            <span class="pdp-badge" id="pdpBadge">LIMITED DROP</span>
+            <div class="pdp-main-placeholder" id="pdpMainImage">
+              <span class="pdp-watermark">KOOVS</span>
+              <div class="pdp-placeholder-icon">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                  <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+                <span class="pdp-placeholder-label" id="pdpViewLabel">FRONT CAMPAIGN VIEW</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pdp-thumbnails">
+            <button class="pdp-thumb active" data-view="Front Campaign View">
+              <span>01</span>
+              <small>FRONT</small>
+            </button>
+            <button class="pdp-thumb" data-view="Back Print View">
+              <span>02</span>
+              <small>BACK</small>
+            </button>
+            <button class="pdp-thumb" data-view="Fabric & Stitching Detail">
+              <span>03</span>
+              <small>DETAIL</small>
+            </button>
+            <button class="pdp-thumb" data-view="Model On-Body Fit">
+              <span>04</span>
+              <small>FIT</small>
+            </button>
+          </div>
+        </div>
+
+        <!-- RIGHT SIDE: PRODUCT DETAILS & PURCHASING CONTROLS -->
+        <div class="pdp-right">
+          
+          <div class="pdp-header-info">
+            <span class="pdp-collection-tag" id="pdpCollection">SPIDER-MAN: BRAND NEW DAY</span>
+            <h1 class="pdp-title font-milker" id="pdpTitle">Web-Slinger Heavy Hoodie</h1>
+            <div class="pdp-price-row">
+              <span class="pdp-price" id="pdpPrice">₹7,999</span>
+              <span class="pdp-tax-tag">Includes all taxes & duties</span>
+            </div>
+          </div>
+
+          <p class="pdp-desc" id="pdpDesc">
+            Crafted from 450 GSM custom French Terry cotton with vintage enzyme wash. Features distressed hem detailing, oversized hood structure, and high-density screen-printed artwork.
+          </p>
+
+          <!-- SIZE SELECTOR -->
+          <div class="pdp-option-group">
+            <div class="pdp-option-header">
+              <span class="pdp-option-title">SELECT SIZE</span>
+              <button class="pdp-size-guide-btn"><i class="fa-solid fa-ruler-horizontal"></i> Size Guide</button>
+            </div>
+            <div class="pdp-size-pills" id="pdpSizeContainer">
+              <button class="pdp-size-btn">S</button>
+              <button class="pdp-size-btn active">M</button>
+              <button class="pdp-size-btn">L</button>
+              <button class="pdp-size-btn">XL</button>
+              <button class="pdp-size-btn">XXL</button>
+            </div>
+          </div>
+
+          <!-- QUANTITY SELECTOR -->
+          <div class="pdp-option-group">
+            <span class="pdp-option-title">QUANTITY</span>
+            <div class="pdp-qty-control">
+              <button class="pdp-qty-btn" id="qtyMinus">-</button>
+              <span class="pdp-qty-val" id="qtyVal">1</span>
+              <button class="pdp-qty-btn" id="qtyPlus">+</button>
+            </div>
+          </div>
+
+          <!-- CTA BUTTONS: ADD TO CART & AR TRY ON -->
+          <div class="pdp-actions">
+            <button class="pdp-btn-cart" id="pdpAddToCartBtn">
+              <i class="fa-solid fa-bag-shopping"></i>
+              <span>Add to Cart</span>
+            </button>
+            
+            <button class="pdp-btn-ar" id="pdpArTryBtn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+              <span>AR Try On</span>
+            </button>
+          </div>
+
+          <!-- SPECS ACCORDION / DETAILS LIST -->
+          <div class="pdp-specs">
+            
+            <div class="pdp-spec-item">
+              <span class="pdp-spec-label"><i class="fa-solid fa-shirt"></i> Material & Fit</span>
+              <p class="pdp-spec-value">450 GSM Heavyweight Terry Cotton. Boxy Gen Z streetwear fit with dropped shoulders and ribbed cuffs.</p>
+            </div>
+
+            <div class="pdp-spec-item">
+              <span class="pdp-spec-label"><i class="fa-solid fa-palette"></i> Color & Finish</span>
+              <p class="pdp-spec-value">Obsidian Black with signature Oxblood (#5C0B0A) screen print accents.</p>
+            </div>
+
+            <div class="pdp-spec-item">
+              <span class="pdp-spec-label"><i class="fa-solid fa-soap"></i> Care Instructions</span>
+              <p class="pdp-spec-value">Machine wash cold inside out. Line dry in shade. Do not iron directly over graphics.</p>
+            </div>
+
+            <div class="pdp-spec-item">
+              <span class="pdp-spec-label"><i class="fa-solid fa-truck-fast"></i> Shipping & Delivery</span>
+              <p class="pdp-spec-value">Free Express Shipping across India. Orders dispatched within 24 Hours.</p>
+            </div>
+
+            <div class="pdp-spec-item">
+              <span class="pdp-spec-label"><i class="fa-solid fa-rotate-left"></i> Return Policy</span>
+              <p class="pdp-spec-value">14-Day Hassle-Free Exchange & Return Policy on all unused capsule items.</p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ═══════════════════════════════════════════════
+       INNER PAGE BRAND SIGNOFF (CENTERED LOGO ONLY)
+  ══════════════════════════════════════════════════ -->
+  <footer class="inner-page-footer">
+    <div class="inner-page-footer__container">
+      <a href="index.html" aria-label="KOOVS Home">
+        <img src="assets/images/koovs_official_logo.png" alt="KOOVS Official Logo" class="inner-page-footer__logo" />
+      </a>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════
+       CAMERA AR TRY-ON MODAL ENGINE
+  ══════════════════════════════════════════════════ -->
+  <div class="ar-modal" id="arModal" aria-hidden="true">
+    <div class="ar-modal__overlay" id="arModalOverlay"></div>
+    <div class="ar-modal__container">
+      <div class="ar-modal__header">
+        <div class="ar-modal__title-wrap">
+          <span class="ar-modal__badge">KOOVS AR ENGINE v2.6</span>
+          <h3 class="ar-modal__title font-milker">Live AR Fitting Room</h3>
+        </div>
+        <button class="ar-modal__close" id="arModalClose" aria-label="Close AR Modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="ar-modal__viewport">
+        <video id="arVideoFeed" autoplay playsinline muted class="ar-modal__video"></video>
+        
+        <div class="ar-modal__reticle" id="arReticle">
+          <div class="ar-modal__reticle-frame"></div>
+          <div class="ar-modal__reticle-scanline"></div>
+          <span class="ar-modal__reticle-text">ALIGN UPPER BODY WITHIN FRAME</span>
+        </div>
+
+        <div class="ar-modal__prompt" id="arPrompt">
+          <i class="fa-solid fa-camera"></i>
+          <p>Requesting camera permission...</p>
+          <span class="ar-modal__prompt-sub">Real-time 3D posture mapping ready for WebXR / Snap Kit integration.</span>
+        </div>
+      </div>
+
+      <div class="ar-modal__controls">
+        <button class="ar-modal__btn" id="arSwitchCameraBtn">
+          <i class="fa-solid fa-camera-rotate"></i>
+          <span>Switch View</span>
+        </button>
+        <button class="ar-modal__btn ar-modal__btn--capture" id="arCaptureBtn">
+          <i class="fa-solid fa-aperture"></i>
+          <span>Snapshot Fit</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="app.js"></script>
+</body>
+</html>
