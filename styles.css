@@ -2242,19 +2242,6 @@ h1, h2, h3,
   letter-spacing: 0.03em;
 }
 
-/* 5. Collection-Specific Custom Cursors */
-.cursor-spiderman, .cursor-spiderman * {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="%235C0B0A" stroke-width="2"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07L19.07 4.93"/><circle cx="12" cy="12" r="5" stroke="%23ff3333"/></svg>') 16 16, auto !important;
-}
-
-.cursor-drake, .cursor-drake * {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="%235C0B0A" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>') 16 16, auto !important;
-}
-
-.cursor-cjp, .cursor-cjp * {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="%235C0B0A" stroke-width="2"><ellipse cx="12" cy="12" rx="4" ry="6"/><path d="M8 8L3 3M16 8l5-5M6 12H2M22 12h-4M8 16l-5 5M16 16l5 5"/></svg>') 16 16, auto !important;
-}
-
 @media (max-width: 768px) {
   .subscribe-section {
     padding: 60px 20px;

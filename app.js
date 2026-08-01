@@ -214,18 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 2, 3 & 5. Hype Meter, Live Visitor Counter & Collection-Specific Cursors
-  const updateCollectionCursor = (capsuleKey) => {
-    document.body.classList.remove('cursor-spiderman', 'cursor-drake', 'cursor-cjp');
-    if (capsuleKey === 'spiderman') {
-      document.body.classList.add('cursor-spiderman');
-    } else if (capsuleKey === 'drake') {
-      document.body.classList.add('cursor-drake');
-    } else if (capsuleKey === 'cjp') {
-      document.body.classList.add('cursor-cjp');
-    }
-  };
-
+  // 2 & 3. Dynamic Hype Meter & Live Visitor Counter
   const updateHypeMeter = () => {
     const hypeFill = document.getElementById('hypeFill');
     const hypeVal = document.getElementById('hypeVal');
@@ -263,7 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     const selectedProducts = exclusiveCapsulesData[capsuleKey];
     buildDynamicCarouselCards(selectedProducts);
-    updateCollectionCursor(capsuleKey);
     updateHypeMeter();
   };
 
@@ -272,7 +260,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (capsuleParam) {
       activateCapsuleTab(initialKey);
     } else {
-      updateCollectionCursor('spiderman');
       updateHypeMeter();
     }
 
