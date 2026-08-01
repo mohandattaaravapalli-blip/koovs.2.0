@@ -203,33 +203,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
   };
 
-  // Feeling Lucky CTA Button (`index.html`)
-  const luckyBtn = document.getElementById('luckyBtn');
-  if (luckyBtn) {
-    luckyBtn.addEventListener('click', () => {
-      const capsuleKeys = Object.keys(exclusiveCapsulesData);
-      const randomKey = capsuleKeys[Math.floor(Math.random() * capsuleKeys.length)];
-      window.location.href = `exclusive-drip.html?collection=${randomKey}`;
-    });
-  }
-
   // Curated Collection Selector Logic (`exclusive-drip.html`)
   const dripTabs = document.querySelectorAll('#exclusiveCollectionBar .collection-tab');
-  const hypeVal = document.getElementById('hypeVal');
-  const hypeFill = document.getElementById('hypeFill');
-  const ambientLayer = document.getElementById('ambientLayer');
-
-  const updateHypeAndAmbient = (capsuleKey) => {
-    // Generate random Hype % (85 - 99%)
-    const randomHype = Math.floor(Math.random() * 15) + 85;
-    if (hypeVal) hypeVal.textContent = `${randomHype}%`;
-    if (hypeFill) hypeFill.style.width = `${randomHype}%`;
-
-    // Ambient overlay theme switching
-    if (ambientLayer) {
-      ambientLayer.className = `ambient-layer ambient--${capsuleKey || 'spiderman'}`;
-    }
-  };
 
   if (dripTabs.length > 0) {
     dripTabs.forEach(tab => {
@@ -241,35 +216,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (capsuleKey && exclusiveCapsulesData[capsuleKey]) {
           const selectedProducts = exclusiveCapsulesData[capsuleKey];
           buildDynamicCarouselCards(selectedProducts);
-          updateHypeAndAmbient(capsuleKey);
         }
       });
     });
-
-    // Check URL query param `?collection=` on page load
-    const collectionParam = new URLSearchParams(window.location.search).get('collection');
-    if (collectionParam && exclusiveCapsulesData[collectionParam]) {
-      const targetTab = Array.from(dripTabs).find(t => t.getAttribute('data-drip') === collectionParam);
-      if (targetTab) {
-        targetTab.click();
-      }
-    }
-  }
-
-  // Drop Countdown Timer Loop (`03:21:17` -> restarts automatically)
-  const dropTimer = document.getElementById('dropTimer');
-  if (dropTimer) {
-    let totalSeconds = 3 * 3600 + 21 * 60 + 17; // 03:21:17
-    setInterval(() => {
-      totalSeconds--;
-      if (totalSeconds < 0) {
-        totalSeconds = 4 * 3600; // Reset to 4 hours on zero
-      }
-      const hrs = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
-      const mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
-      const secs = String(totalSeconds % 60).padStart(2, '0');
-      dropTimer.textContent = `${hrs}:${mins}:${secs}`;
-    }, 1000);
   }
 
   /* ----------------------------------------------------------
@@ -669,24 +618,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const pdpAddToCartBtn = document.getElementById('pdpAddToCartBtn');
-  const fitMatchToast = document.getElementById('fitMatchToast');
-  const vibeMatchVal = document.getElementById('vibeMatchVal');
-  let toastTimer = null;
-
-  const showFitMatchToast = () => {
-    if (!fitMatchToast) return;
-    const randomVibe = Math.floor(Math.random() * 10) + 90; // 90-99%
-    if (vibeMatchVal) vibeMatchVal.textContent = `${randomVibe}%`;
-
-    fitMatchToast.classList.add('show');
-    fitMatchToast.setAttribute('aria-hidden', 'false');
-
-    if (toastTimer) clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => {
-      fitMatchToast.classList.remove('show');
-      fitMatchToast.setAttribute('aria-hidden', 'true');
-    }, 3000);
-  };
 
   if (pdpAddToCartBtn) {
     pdpAddToCartBtn.addEventListener('click', () => {
@@ -698,9 +629,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       pdpAddToCartBtn.innerHTML = '<i class="fa-solid fa-check"></i> Added to Cart!';
       pdpAddToCartBtn.style.backgroundColor = 'var(--color-accent-hover)';
-
-      showFitMatchToast();
-
       setTimeout(() => {
         pdpAddToCartBtn.innerHTML = '<i class="fa-solid fa-bag-shopping"></i> Add to Cart';
         pdpAddToCartBtn.style.backgroundColor = 'var(--color-accent-red)';
@@ -752,44 +680,65 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroCards = document.querySelectorAll('#cardDrip, #cardEveryday');
   
   heroCards.forEach(card => {
-    const imgOverlay = card.querySelector('.hero-card__img-overlay');
+    let bounds = null;
+    let currentRotateX = 0;
+    let currentRotateY = 0;
+    let targetRotateX = 0;
+    let targetRotateY = 0;
+    let isHovering = false;
     let rafId = null;
 
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+    const maxTilt = 10; // Max tilt angle (degrees)
 
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
+    const updateTilt = () => {
+      if (!isHovering) {
+        // Smooth spring decay back to flat position
+        currentRotateX += (0 - currentRotateX) * 0.12;
+        currentRotateY += (0 - currentRotateY) * 0.12;
 
-      const deltaX = (x - centerX) / centerX; // -1 to +1
-      const deltaY = (y - centerY) / centerY; // -1 to +1
-
-      const rotateX = (-deltaY * 10).toFixed(2);
-      const rotateY = (deltaX * 10).toFixed(2);
-
-      if (rafId) cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => {
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.025, 1.025, 1.025)`;
-        card.style.transition = 'transform 0.08s ease-out';
-
-        if (imgOverlay) {
-          imgOverlay.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255, 255, 255, 0.16) 0%, rgba(17, 17, 17, 0.92) 70%)`;
-          imgOverlay.style.transition = 'background 0.08s ease-out';
+        if (Math.abs(currentRotateX) < 0.02 && Math.abs(currentRotateY) < 0.02) {
+          card.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+          rafId = null;
+          return;
         }
-      });
+      } else {
+        // Smooth linear interpolation (lerp) towards target mouse position
+        currentRotateX += (targetRotateX - currentRotateX) * 0.15;
+        currentRotateY += (targetRotateY - currentRotateY) * 0.15;
+      }
+
+      card.style.transform = `perspective(1200px) rotateX(${currentRotateX.toFixed(2)}deg) rotateY(${currentRotateY.toFixed(2)}deg) scale3d(1.03, 1.03, 1.03)`;
+      rafId = requestAnimationFrame(updateTilt);
+    };
+
+    card.addEventListener('mouseenter', () => {
+      bounds = card.getBoundingClientRect();
+      isHovering = true;
+      if (!rafId) {
+        rafId = requestAnimationFrame(updateTilt);
+      }
+    });
+
+    card.addEventListener('mousemove', (e) => {
+      if (!bounds) bounds = card.getBoundingClientRect();
+      const mouseX = e.clientX - bounds.left;
+      const mouseY = e.clientY - bounds.top;
+
+      const centerX = bounds.width / 2;
+      const centerY = bounds.height / 2;
+
+      const normX = (mouseX - centerX) / centerX;
+      const normY = (mouseY - centerY) / centerY;
+
+      targetRotateX = (-normY * maxTilt);
+      targetRotateY = (normX * maxTilt);
     });
 
     card.addEventListener('mouseleave', () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
-      card.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
-
-      if (imgOverlay) {
-        imgOverlay.style.background = 'linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(17,17,17,0.95) 100%)';
-        imgOverlay.style.transition = 'background 0.6s ease';
-      }
+      isHovering = false;
+      targetRotateX = 0;
+      targetRotateY = 0;
+      bounds = null;
     });
   });
 
