@@ -219,6 +219,50 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCartHeaderBadge();
 
   /* ----------------------------------------------------------
+     HOMEPAGE HERO CARDS — INTERACTIVE 3D TILT ENGINE
+     ---------------------------------------------------------- */
+  const heroCards = document.querySelectorAll('.hero-card');
+
+  heroCards.forEach(card => {
+    let rAF = null;
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      // Calculate tilt angles (-8 deg to +8 deg max)
+      const rotateX = (((y - centerY) / centerY) * -8).toFixed(2);
+      const rotateY = (((x - centerX) / centerX) * 8).toFixed(2);
+
+      // Glare position percentage
+      const glareX = ((x / rect.width) * 100).toFixed(1);
+      const glareY = ((y / rect.height) * 100).toFixed(1);
+
+      if (rAF) cancelAnimationFrame(rAF);
+
+      rAF = requestAnimationFrame(() => {
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px) scale(1.02)`;
+        card.style.setProperty('--glare-x', `${glareX}%`);
+        card.style.setProperty('--glare-y', `${glareY}%`);
+        card.style.borderColor = 'var(--color-accent-red)';
+        card.style.boxShadow = `0 32px 80px rgba(0, 0, 0, 0.9), 0 0 40px var(--color-accent-glow)`;
+      });
+    });
+
+    card.addEventListener('mouseleave', () => {
+      if (rAF) cancelAnimationFrame(rAF);
+
+      card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)`;
+      card.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+      card.style.boxShadow = `0 24px 60px rgba(0, 0, 0, 0.8), 0 0 25px var(--color-accent-glow)`;
+    });
+  });
+
+  /* ----------------------------------------------------------
      4. EXCLUSIVE DRIP — 10 CURATED CAPSULES (10 ITEMS EACH)
      ---------------------------------------------------------- */
   const exclusiveCapsulesData = {
