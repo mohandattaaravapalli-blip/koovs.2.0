@@ -55,212 +55,27 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ----------------------------------------------------------
-     3. PERSISTENT SHOPPING CART ENGINE & DRAWER CONTROLS
+     3. SEARCH & CART MODAL CONTROLS
      ---------------------------------------------------------- */
-  let koovsCart = JSON.parse(sessionStorage.getItem('koovs_cart_items') || '[]');
-
-  const updateCartHeaderBadge = () => {
-    const totalCount = koovsCart.reduce((sum, item) => sum + item.qty, 0);
-    const cartBadge = document.getElementById('cartBadge');
-    if (cartBadge) {
-      cartBadge.textContent = totalCount;
-    }
-  };
-
-  const renderCartDrawerUI = () => {
-    const cartItemsList = document.getElementById('cartItemsList');
-    const cartTotalItems = document.getElementById('cartTotalItems');
-    const cartSubtotal = document.getElementById('cartSubtotal');
-    if (!cartItemsList) return;
-
-    if (koovsCart.length === 0) {
-      cartItemsList.innerHTML = `
-        <div class="cart-empty-state">
-          <i class="fa-solid fa-bag-shopping"></i>
-          <p class="font-milker" style="font-size: 18px; color: #fff; margin: 0;">YOUR BAG IS EMPTY</p>
-          <span style="font-size: 12px; color: var(--color-gray-400);">Explore Exclusive Drip to start collecting.</span>
-        </div>
-      `;
-      if (cartTotalItems) cartTotalItems.textContent = '0';
-      if (cartSubtotal) cartSubtotal.textContent = '₹0';
-      return;
-    }
-
-    let subtotalCalc = 0;
-    let totalItemsCalc = 0;
-
-    cartItemsList.innerHTML = koovsCart.map((item, index) => {
-      totalItemsCalc += item.qty;
-      const numPrice = parseInt(item.price.replace(/[^\d]/g, ''), 10) || 0;
-      subtotalCalc += numPrice * item.qty;
-
-      return `
-        <div class="cart-item-card" data-index="${index}">
-          <div class="cart-item-img">
-            <i class="fa-solid fa-shirt"></i>
-          </div>
-          <div class="cart-item-details">
-            <span class="cart-item-tag">${item.collection || 'EXCLUSIVE DRIP'}</span>
-            <span class="cart-item-title">${item.title}</span>
-            <span class="cart-item-price">${item.price}</span>
-            <div class="cart-item-controls">
-              <button type="button" class="cart-qty-btn cart-qty-minus" data-id="${item.id}">-</button>
-              <span class="cart-qty-val">${item.qty}</span>
-              <button type="button" class="cart-qty-btn cart-qty-plus" data-id="${item.id}">+</button>
-            </div>
-          </div>
-          <button type="button" class="cart-item-remove" data-id="${item.id}" aria-label="Remove item">
-            <i class="fa-solid fa-trash-can"></i>
-          </button>
-        </div>
-      `;
-    }).join('');
-
-    if (cartTotalItems) cartTotalItems.textContent = totalItemsCalc;
-    if (cartSubtotal) cartSubtotal.textContent = `₹${subtotalCalc.toLocaleString('en-IN')}`;
-
-    // Item controls event listeners inside cart drawer
-    cartItemsList.querySelectorAll('.cart-qty-minus').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const id = e.currentTarget.getAttribute('data-id');
-        const targetItem = koovsCart.find(i => i.id === id);
-        if (targetItem) {
-          if (targetItem.qty > 1) {
-            targetItem.qty--;
-          } else {
-            koovsCart = koovsCart.filter(i => i.id !== id);
-          }
-          saveCart();
-        }
-      });
-    });
-
-    cartItemsList.querySelectorAll('.cart-qty-plus').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const id = e.currentTarget.getAttribute('data-id');
-        const targetItem = koovsCart.find(i => i.id === id);
-        if (targetItem) {
-          targetItem.qty++;
-          saveCart();
-        }
-      });
-    });
-
-    cartItemsList.querySelectorAll('.cart-item-remove').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const id = e.currentTarget.getAttribute('data-id');
-        koovsCart = koovsCart.filter(i => i.id !== id);
-        saveCart();
-      });
-    });
-  };
-
-  const saveCart = () => {
-    sessionStorage.setItem('koovs_cart_items', JSON.stringify(koovsCart));
-    updateCartHeaderBadge();
-    renderCartDrawerUI();
-  };
-
-  const addItemToCart = (item, addQty = 1) => {
-    const existing = koovsCart.find(i => i.id === item.id);
-    if (existing) {
-      existing.qty += addQty;
-    } else {
-      koovsCart.push({
-        id: item.id,
-        title: item.title,
-        price: item.price,
-        collection: item.collection || 'EXCLUSIVE DRIP',
-        qty: addQty
-      });
-    }
-    saveCart();
-  };
-
-  // Cart Drawer open/close controls
-  const cartDrawer = document.getElementById('cartDrawer');
-  const cartBtn = document.getElementById('cartBtn');
-  const cartDrawerClose = document.getElementById('cartDrawerClose');
-  const cartDrawerOverlay = document.getElementById('cartDrawerOverlay');
-  const cartCheckoutBtn = document.getElementById('cartCheckoutBtn');
-
-  if (cartBtn && cartDrawer) {
-    cartBtn.addEventListener('click', () => {
-      cartDrawer.classList.add('open');
-      cartDrawer.setAttribute('aria-hidden', 'false');
-      renderCartDrawerUI();
-    });
-  }
-
-  const closeCartDrawer = () => {
-    if (cartDrawer) {
-      cartDrawer.classList.remove('open');
-      cartDrawer.setAttribute('aria-hidden', 'true');
-    }
-  };
-
-  if (cartDrawerClose) cartDrawerClose.addEventListener('click', closeCartDrawer);
-  if (cartDrawerOverlay) cartDrawerOverlay.addEventListener('click', closeCartDrawer);
-
-  if (cartCheckoutBtn) {
-    cartCheckoutBtn.addEventListener('click', () => {
-      if (koovsCart.length === 0) {
-        alert('Your bag is empty! Add items before proceeding to checkout.');
-        return;
+  const searchBtn = document.getElementById('searchBtn');
+  if (searchBtn) {
+    searchBtn.addEventListener('click', () => {
+      const query = prompt("Search KOOVS Exclusive Catalog (e.g., 'Spider-Man', 'Sabrina', 'Drake'):");
+      if (query && query.trim() !== '') {
+        alert(`Searching catalog for: "${query.trim()}"`);
       }
-      alert('⚡ KOOVS Checkout simulation ready. Thank you for placing your order!');
-      koovsCart = [];
-      saveCart();
-      closeCartDrawer();
     });
   }
 
-  // Initialize cart badge on page load
-  updateCartHeaderBadge();
+  const cartBtn = document.getElementById('cartBtn');
+  const cartBadge = document.getElementById('cartBadge');
+  let globalCartCount = 0;
 
-  /* ----------------------------------------------------------
-     HOMEPAGE HERO CARDS — INTERACTIVE 3D TILT ENGINE
-     ---------------------------------------------------------- */
-  const heroCards = document.querySelectorAll('.hero-card');
-
-  heroCards.forEach(card => {
-    let rAF = null;
-
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-
-      // Calculate tilt angles (-8 deg to +8 deg max)
-      const rotateX = (((y - centerY) / centerY) * -8).toFixed(2);
-      const rotateY = (((x - centerX) / centerX) * 8).toFixed(2);
-
-      // Glare position percentage
-      const glareX = ((x / rect.width) * 100).toFixed(1);
-      const glareY = ((y / rect.height) * 100).toFixed(1);
-
-      if (rAF) cancelAnimationFrame(rAF);
-
-      rAF = requestAnimationFrame(() => {
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px) scale(1.02)`;
-        card.style.setProperty('--glare-x', `${glareX}%`);
-        card.style.setProperty('--glare-y', `${glareY}%`);
-        card.style.borderColor = 'var(--color-accent-red)';
-        card.style.boxShadow = `0 32px 80px rgba(0, 0, 0, 0.9), 0 0 40px var(--color-accent-glow)`;
-      });
+  if (cartBtn) {
+    cartBtn.addEventListener('click', () => {
+      alert(`Shopping Cart: ${cartBadge ? cartBadge.textContent : 0} item(s) selected.`);
     });
-
-    card.addEventListener('mouseleave', () => {
-      if (rAF) cancelAnimationFrame(rAF);
-
-      card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)`;
-      card.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-      card.style.boxShadow = `0 24px 60px rgba(0, 0, 0, 0.8), 0 0 25px var(--color-accent-glow)`;
-    });
-  });
+  }
 
   /* ----------------------------------------------------------
      4. EXCLUSIVE DRIP — 10 CURATED CAPSULES (10 ITEMS EACH)
@@ -860,7 +675,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const showFitMatchToast = () => {
     if (!fitMatchToast) return;
-    const randomVibe = Math.floor(Math.random() * 6) + 94; // 94-99%
+    const randomVibe = Math.floor(Math.random() * 10) + 90; // 90-99%
     if (vibeMatchVal) vibeMatchVal.textContent = `${randomVibe}%`;
 
     fitMatchToast.classList.add('show');
@@ -875,21 +690,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (pdpAddToCartBtn) {
     pdpAddToCartBtn.addEventListener('click', () => {
-      // Find current item details from PDP
-      const currentItem = productsDatabase[productId] || {
-        id: productId || 'spidey-1',
-        title: document.getElementById('pdpTitle')?.textContent || 'Exclusive Garment',
-        price: document.getElementById('pdpPrice')?.textContent || '₹2,499',
-        collection: document.getElementById('pdpCollection')?.textContent || 'EXCLUSIVE DRIP'
-      };
-
-      addItemToCart({
-        id: currentItem.id || productId || 'spidey-1',
-        title: currentItem.title,
-        price: currentItem.price,
-        collection: currentItem.collection
-      }, currentQty);
-
+      globalCartCount += currentQty;
+      if (cartBadge) {
+        cartBadge.textContent = globalCartCount;
+        cartBadge.style.transform = 'scale(1.4)';
+        setTimeout(() => cartBadge.style.transform = '', 300);
+      }
       pdpAddToCartBtn.innerHTML = '<i class="fa-solid fa-check"></i> Added to Cart!';
       pdpAddToCartBtn.style.backgroundColor = 'var(--color-accent-hover)';
 
@@ -899,78 +705,6 @@ document.addEventListener('DOMContentLoaded', () => {
         pdpAddToCartBtn.innerHTML = '<i class="fa-solid fa-bag-shopping"></i> Add to Cart';
         pdpAddToCartBtn.style.backgroundColor = 'var(--color-accent-red)';
       }, 2000);
-    });
-  }
-
-  /* ----------------------------------------------------------
-     10. INTERACTIVE LIVE SEARCH MODAL ENGINE
-     ---------------------------------------------------------- */
-  const searchModal = document.getElementById('searchModal');
-  const searchInput = document.getElementById('searchInput');
-  const searchResults = document.getElementById('searchResults');
-  const searchBtn = document.getElementById('searchBtn');
-  const searchModalClose = document.getElementById('searchModalClose');
-  const searchModalOverlay = document.getElementById('searchModalOverlay');
-
-  const renderSearchResults = (query) => {
-    if (!searchResults) return;
-    const cleanQuery = query.toLowerCase().trim();
-    const allProducts = Object.keys(productsDatabase).map(key => ({
-      id: key,
-      ...productsDatabase[key]
-    }));
-
-    const filtered = allProducts.filter(p => {
-      if (!cleanQuery) return true;
-      return (p.title && p.title.toLowerCase().includes(cleanQuery)) ||
-             (p.collection && p.collection.toLowerCase().includes(cleanQuery)) ||
-             (p.desc && p.desc.toLowerCase().includes(cleanQuery));
-    });
-
-    if (filtered.length === 0) {
-      searchResults.innerHTML = `
-        <div style="grid-column: 1 / -1; padding: 40px 20px; text-align: center; color: var(--color-gray-400);">
-          <i class="fa-solid fa-ghost" style="font-size: 36px; color: var(--color-accent-red); margin-bottom: 12px;"></i>
-          <p style="font-size: 16px; font-weight: 700; color: #fff; margin: 0;">NO DROPS FOUND</p>
-          <span style="font-size: 13px;">No items match "${query}". Try searching "Spider", "Drake", "Hoodie", or "Shirt".</span>
-        </div>
-      `;
-      return;
-    }
-
-    searchResults.innerHTML = filtered.slice(0, 18).map(p => `
-      <a href="product-detail.html?id=${p.id}" class="search-result-card">
-        <span class="search-result-tag">${p.collection || 'EXCLUSIVE DRIP'}</span>
-        <span class="search-result-title">${p.title}</span>
-        <span class="search-result-price">${p.price}</span>
-      </a>
-    `).join('');
-  };
-
-  if (searchBtn && searchModal) {
-    searchBtn.addEventListener('click', () => {
-      searchModal.classList.add('open');
-      searchModal.setAttribute('aria-hidden', 'false');
-      if (searchInput) {
-        searchInput.focus();
-        renderSearchResults('');
-      }
-    });
-  }
-
-  const closeSearchModal = () => {
-    if (searchModal) {
-      searchModal.classList.remove('open');
-      searchModal.setAttribute('aria-hidden', 'true');
-    }
-  };
-
-  if (searchModalClose) searchModalClose.addEventListener('click', closeSearchModal);
-  if (searchModalOverlay) searchModalOverlay.addEventListener('click', closeSearchModal);
-
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      renderSearchResults(e.target.value);
     });
   }
 
@@ -1016,7 +750,11 @@ document.addEventListener('DOMContentLoaded', () => {
      10. INTERACTIVE 3D PERSPECTIVE TILT FOR HOMEPAGE CARDS
      ---------------------------------------------------------- */
   const heroCards = document.querySelectorAll('#cardDrip, #cardEveryday');
+  
   heroCards.forEach(card => {
+    const imgOverlay = card.querySelector('.hero-card__img-overlay');
+    let rafId = null;
+
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -1025,19 +763,33 @@ document.addEventListener('DOMContentLoaded', () => {
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      const deltaX = (x - centerX) / centerX;
-      const deltaY = (y - centerY) / centerY;
+      const deltaX = (x - centerX) / centerX; // -1 to +1
+      const deltaY = (y - centerY) / centerY; // -1 to +1
 
-      const rotateX = (-deltaY * 8).toFixed(2);
-      const rotateY = (deltaX * 8).toFixed(2);
+      const rotateX = (-deltaY * 10).toFixed(2);
+      const rotateY = (deltaX * 10).toFixed(2);
 
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.025, 1.025, 1.025)`;
-      card.style.transition = 'transform 0.1s ease-out';
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.025, 1.025, 1.025)`;
+        card.style.transition = 'transform 0.08s ease-out';
+
+        if (imgOverlay) {
+          imgOverlay.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255, 255, 255, 0.16) 0%, rgba(17, 17, 17, 0.92) 70%)`;
+          imgOverlay.style.transition = 'background 0.08s ease-out';
+        }
+      });
     });
 
     card.addEventListener('mouseleave', () => {
+      if (rafId) cancelAnimationFrame(rafId);
       card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
       card.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+
+      if (imgOverlay) {
+        imgOverlay.style.background = 'linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(17,17,17,0.95) 100%)';
+        imgOverlay.style.transition = 'background 0.6s ease';
+      }
     });
   });
 

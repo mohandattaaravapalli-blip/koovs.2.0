@@ -464,65 +464,6 @@
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════════
-       INTERACTIVE SHOPPING CART DRAWER
-  ══════════════════════════════════════════════════ -->
-  <div class="cart-drawer" id="cartDrawer" aria-hidden="true">
-    <div class="cart-drawer__overlay" id="cartDrawerOverlay"></div>
-    <div class="cart-drawer__content">
-      <div class="cart-drawer__header">
-        <div class="cart-drawer__title-wrap">
-          <i class="fa-solid fa-bag-shopping cart-drawer__icon"></i>
-          <h3 class="cart-drawer__title font-milker">Your Shopping Bag</h3>
-        </div>
-        <button class="cart-drawer__close" id="cartDrawerClose" aria-label="Close cart">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <div class="cart-drawer__body" id="cartItemsList">
-        <!-- Rendered dynamically via JavaScript -->
-      </div>
-
-      <div class="cart-drawer__footer">
-        <div class="cart-summary-row">
-          <span class="cart-summary-label">Total Items:</span>
-          <span class="cart-summary-val" id="cartTotalItems">0</span>
-        </div>
-        <div class="cart-summary-row cart-summary-row--subtotal">
-          <span class="cart-summary-label">Subtotal:</span>
-          <span class="cart-summary-val cart-summary-val--price" id="cartSubtotal">₹0</span>
-        </div>
-        <button class="cart-checkout-btn" id="cartCheckoutBtn">
-          <span>Proceed to Checkout</span>
-          <i class="fa-solid fa-arrow-right"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════════
-       INTERACTIVE LIVE SEARCH MODAL
-  ══════════════════════════════════════════════════ -->
-  <div class="search-modal" id="searchModal" aria-hidden="true">
-    <div class="search-modal__overlay" id="searchModalOverlay"></div>
-    <div class="search-modal__container">
-      <div class="search-modal__header">
-        <div class="search-modal__input-wrap">
-          <i class="fa-solid fa-magnifying-glass search-modal__icon"></i>
-          <input type="text" class="search-modal__input" id="searchInput" placeholder="Search products, capsules, or styles (e.g. Spider, Drake, Hoodie)..." autocomplete="off" />
-        </div>
-        <button class="search-modal__close" id="searchModalClose" aria-label="Close search">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <div class="search-modal__results" id="searchResults">
-        <!-- Instant search results grid -->
-      </div>
-    </div>
-  </div>
-
   <!-- JavaScript -->
   <script src="app.js"></script>
 </body>
