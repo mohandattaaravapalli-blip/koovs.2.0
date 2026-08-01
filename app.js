@@ -203,72 +203,73 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
   };
 
-  // 1. "Feeling Lucky?" Button (Homepage)
-  const feelingLuckyBtn = document.getElementById('feelingLuckyBtn');
-  if (feelingLuckyBtn) {
-    feelingLuckyBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const keys = Object.keys(exclusiveCapsulesData);
-      const randomKey = keys[Math.floor(Math.random() * keys.length)];
-      window.location.href = `exclusive-drip.html?capsule=${randomKey}`;
+  // Feeling Lucky CTA Button (`index.html`)
+  const luckyBtn = document.getElementById('luckyBtn');
+  if (luckyBtn) {
+    luckyBtn.addEventListener('click', () => {
+      const capsuleKeys = Object.keys(exclusiveCapsulesData);
+      const randomKey = capsuleKeys[Math.floor(Math.random() * capsuleKeys.length)];
+      window.location.href = `exclusive-drip.html?collection=${randomKey}`;
     });
-  }
-
-  // 2 & 3. Dynamic Hype Meter & Live Visitor Counter
-  const updateHypeMeter = () => {
-    const hypeFill = document.getElementById('hypeFill');
-    const hypeVal = document.getElementById('hypeVal');
-    if (hypeFill && hypeVal) {
-      const pct = Math.floor(Math.random() * 19) + 81; // 81% - 99%
-      hypeFill.style.width = pct + '%';
-      hypeVal.textContent = `${pct}% explored today`;
-    }
-  };
-
-  const viewerCountEl = document.getElementById('viewerCount');
-  if (viewerCountEl) {
-    let currentViewers = Math.floor(Math.random() * 45) + 16; // 16 - 60
-    viewerCountEl.textContent = currentViewers;
-    setInterval(() => {
-      const delta = Math.floor(Math.random() * 7) - 3;
-      currentViewers = Math.max(12, Math.min(65, currentViewers + delta));
-      viewerCountEl.textContent = currentViewers;
-    }, 4500);
   }
 
   // Curated Collection Selector Logic (`exclusive-drip.html`)
-  const urlParams = new URLSearchParams(window.location.search);
-  const capsuleParam = urlParams.get('capsule');
   const dripTabs = document.querySelectorAll('#exclusiveCollectionBar .collection-tab');
+  const hypeVal = document.getElementById('hypeVal');
+  const hypeFill = document.getElementById('hypeFill');
+  const ambientLayer = document.getElementById('ambientLayer');
 
-  const activateCapsuleTab = (capsuleKey) => {
-    if (!capsuleKey || !exclusiveCapsulesData[capsuleKey]) return;
-    dripTabs.forEach(t => {
-      if (t.getAttribute('data-drip') === capsuleKey) {
-        t.classList.add('active');
-      } else {
-        t.classList.remove('active');
-      }
-    });
-    const selectedProducts = exclusiveCapsulesData[capsuleKey];
-    buildDynamicCarouselCards(selectedProducts);
-    updateHypeMeter();
+  const updateHypeAndAmbient = (capsuleKey) => {
+    // Generate random Hype % (85 - 99%)
+    const randomHype = Math.floor(Math.random() * 15) + 85;
+    if (hypeVal) hypeVal.textContent = `${randomHype}%`;
+    if (hypeFill) hypeFill.style.width = `${randomHype}%`;
+
+    // Ambient overlay theme switching
+    if (ambientLayer) {
+      ambientLayer.className = `ambient-layer ambient--${capsuleKey || 'spiderman'}`;
+    }
   };
 
   if (dripTabs.length > 0) {
-    const initialKey = capsuleParam && exclusiveCapsulesData[capsuleParam] ? capsuleParam : 'spiderman';
-    if (capsuleParam) {
-      activateCapsuleTab(initialKey);
-    } else {
-      updateHypeMeter();
-    }
-
     dripTabs.forEach(tab => {
       tab.addEventListener('click', () => {
+        dripTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
         const capsuleKey = tab.getAttribute('data-drip');
-        activateCapsuleTab(capsuleKey);
+        if (capsuleKey && exclusiveCapsulesData[capsuleKey]) {
+          const selectedProducts = exclusiveCapsulesData[capsuleKey];
+          buildDynamicCarouselCards(selectedProducts);
+          updateHypeAndAmbient(capsuleKey);
+        }
       });
     });
+
+    // Check URL query param `?collection=` on page load
+    const collectionParam = new URLSearchParams(window.location.search).get('collection');
+    if (collectionParam && exclusiveCapsulesData[collectionParam]) {
+      const targetTab = Array.from(dripTabs).find(t => t.getAttribute('data-drip') === collectionParam);
+      if (targetTab) {
+        targetTab.click();
+      }
+    }
+  }
+
+  // Drop Countdown Timer Loop (`03:21:17` -> restarts automatically)
+  const dropTimer = document.getElementById('dropTimer');
+  if (dropTimer) {
+    let totalSeconds = 3 * 3600 + 21 * 60 + 17; // 03:21:17
+    setInterval(() => {
+      totalSeconds--;
+      if (totalSeconds < 0) {
+        totalSeconds = 4 * 3600; // Reset to 4 hours on zero
+      }
+      const hrs = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+      const mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+      const secs = String(totalSeconds % 60).padStart(2, '0');
+      dropTimer.textContent = `${hrs}:${mins}:${secs}`;
+    }, 1000);
   }
 
   /* ----------------------------------------------------------
@@ -667,32 +668,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 4. Fit Match Recommendation Toast
-  const showFitMatchToast = () => {
-    let toast = document.getElementById('fitMatchToast');
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.id = 'fitMatchToast';
-      toast.className = 'fit-match-toast';
-      document.body.appendChild(toast);
-    }
-    const score = Math.floor(Math.random() * 10) + 90; // 90% - 99%
-    toast.innerHTML = `
-      <div class="fit-match-toast__header">
-        <i class="fa-solid fa-circle-check" style="color: #00ff88;"></i>
-        <span>Added to Cart</span>
-      </div>
-      <div class="fit-match-toast__score">
-        ✨ Fit Match Recommendation: <strong>${score}% Match</strong> to your vibe
-      </div>
-    `;
-    toast.classList.add('show');
-    setTimeout(() => {
-      toast.classList.remove('show');
-    }, 3500);
-  };
-
   const pdpAddToCartBtn = document.getElementById('pdpAddToCartBtn');
+  const fitMatchToast = document.getElementById('fitMatchToast');
+  const vibeMatchVal = document.getElementById('vibeMatchVal');
+  let toastTimer = null;
+
+  const showFitMatchToast = () => {
+    if (!fitMatchToast) return;
+    const randomVibe = Math.floor(Math.random() * 10) + 90; // 90-99%
+    if (vibeMatchVal) vibeMatchVal.textContent = `${randomVibe}%`;
+
+    fitMatchToast.classList.add('show');
+    fitMatchToast.setAttribute('aria-hidden', 'false');
+
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      fitMatchToast.classList.remove('show');
+      fitMatchToast.setAttribute('aria-hidden', 'true');
+    }, 3000);
+  };
 
   if (pdpAddToCartBtn) {
     pdpAddToCartBtn.addEventListener('click', () => {
@@ -704,7 +698,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       pdpAddToCartBtn.innerHTML = '<i class="fa-solid fa-check"></i> Added to Cart!';
       pdpAddToCartBtn.style.backgroundColor = 'var(--color-accent-hover)';
-      
+
       showFitMatchToast();
 
       setTimeout(() => {

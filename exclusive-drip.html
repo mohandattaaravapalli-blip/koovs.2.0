@@ -122,8 +122,11 @@
     </div>
   </nav>
 
+  <!-- SUBTLE COLLECTION AMBIENT OVERLAY LAYER -->
+  <div class="ambient-layer ambient--spiderman" id="ambientLayer"></div>
+
   <!-- ═══════════════════════════════════════════════
-       CATALOG TOOLBAR (SORT BY & FILTER CONTROLS)
+       CATALOG TOOLBAR & HUD WIDGETS
   ══════════════════════════════════════════════════ -->
   <div class="catalog-toolbar">
     <div class="catalog-toolbar__inner">
@@ -176,6 +179,28 @@
         </div>
       </div>
 
+      <!-- PREMIUM HYPE METER & DROP TIMER WIDGETS -->
+      <div class="drip-hud-bar">
+        <!-- HYPE METER WIDGET -->
+        <div class="hud-widget hud-widget--hype">
+          <div class="hud-widget__header">
+            <span class="hud-widget__label"><i class="fa-solid fa-fire-flame-curved"></i> HYPE TODAY</span>
+            <span class="hud-widget__val" id="hypeVal">94%</span>
+          </div>
+          <div class="hud-widget__bar">
+            <div class="hud-widget__fill" id="hypeFill" style="width: 94%;"></div>
+          </div>
+          <span class="hud-widget__sub">Trending right now</span>
+        </div>
+
+        <!-- DROP TIMER WIDGET -->
+        <div class="hud-widget hud-widget--timer">
+          <span class="hud-widget__label"><i class="fa-regular fa-clock"></i> DROP ENDS IN</span>
+          <div class="hud-widget__countdown" id="dropTimer">03:21:17</div>
+          <span class="hud-widget__sub">Limited capsule release</span>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -183,24 +208,6 @@
        3D INFINITE CIRCULAR CAROUSEL SHOWCASE
   ══════════════════════════════════════════════════ -->
   <section class="carousel-section" style="padding-top: 10px;">
-    <!-- DYNAMIC HYPE METER & LIVE VISITOR COUNTER -->
-    <div class="drip-hype-bar" id="dripHypeBar">
-      <div class="drip-hype-item">
-        <span class="drip-hype-label"><i class="fa-solid fa-fire-flame-curved"></i> Hype Meter</span>
-        <div class="drip-hype-progress-wrap">
-          <div class="drip-hype-progress-fill" id="hypeFill" style="width: 94%;"></div>
-        </div>
-        <span class="drip-hype-val" id="hypeVal">94% explored today</span>
-      </div>
-      <div class="drip-hype-divider"></div>
-      <div class="drip-hype-item">
-        <span class="drip-live-viewers" id="liveViewers">
-          <span class="live-dot"></span>
-          <span id="viewerCount">27</span> people viewing this drop right now
-        </span>
-      </div>
-    </div>
-
     <div class="carousel-instructions">
       <span class="carousel-hint-tag"><i class="fa-solid fa-arrows-spin"></i> 3D ROTATING SHOWCASE WHEEL</span>
       <p>Scroll your mouse wheel or drag to rotate through the infinite 3D circular catalog</p>
