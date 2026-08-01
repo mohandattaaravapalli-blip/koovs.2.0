@@ -203,20 +203,83 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
   };
 
+  // 1. "Feeling Lucky?" Button (Homepage)
+  const feelingLuckyBtn = document.getElementById('feelingLuckyBtn');
+  if (feelingLuckyBtn) {
+    feelingLuckyBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const keys = Object.keys(exclusiveCapsulesData);
+      const randomKey = keys[Math.floor(Math.random() * keys.length)];
+      window.location.href = `exclusive-drip.html?capsule=${randomKey}`;
+    });
+  }
+
+  // 2, 3 & 5. Hype Meter, Live Visitor Counter & Collection-Specific Cursors
+  const updateCollectionCursor = (capsuleKey) => {
+    document.body.classList.remove('cursor-spiderman', 'cursor-drake', 'cursor-cjp');
+    if (capsuleKey === 'spiderman') {
+      document.body.classList.add('cursor-spiderman');
+    } else if (capsuleKey === 'drake') {
+      document.body.classList.add('cursor-drake');
+    } else if (capsuleKey === 'cjp') {
+      document.body.classList.add('cursor-cjp');
+    }
+  };
+
+  const updateHypeMeter = () => {
+    const hypeFill = document.getElementById('hypeFill');
+    const hypeVal = document.getElementById('hypeVal');
+    if (hypeFill && hypeVal) {
+      const pct = Math.floor(Math.random() * 19) + 81; // 81% - 99%
+      hypeFill.style.width = pct + '%';
+      hypeVal.textContent = `${pct}% explored today`;
+    }
+  };
+
+  const viewerCountEl = document.getElementById('viewerCount');
+  if (viewerCountEl) {
+    let currentViewers = Math.floor(Math.random() * 45) + 16; // 16 - 60
+    viewerCountEl.textContent = currentViewers;
+    setInterval(() => {
+      const delta = Math.floor(Math.random() * 7) - 3;
+      currentViewers = Math.max(12, Math.min(65, currentViewers + delta));
+      viewerCountEl.textContent = currentViewers;
+    }, 4500);
+  }
+
   // Curated Collection Selector Logic (`exclusive-drip.html`)
+  const urlParams = new URLSearchParams(window.location.search);
+  const capsuleParam = urlParams.get('capsule');
   const dripTabs = document.querySelectorAll('#exclusiveCollectionBar .collection-tab');
 
+  const activateCapsuleTab = (capsuleKey) => {
+    if (!capsuleKey || !exclusiveCapsulesData[capsuleKey]) return;
+    dripTabs.forEach(t => {
+      if (t.getAttribute('data-drip') === capsuleKey) {
+        t.classList.add('active');
+      } else {
+        t.classList.remove('active');
+      }
+    });
+    const selectedProducts = exclusiveCapsulesData[capsuleKey];
+    buildDynamicCarouselCards(selectedProducts);
+    updateCollectionCursor(capsuleKey);
+    updateHypeMeter();
+  };
+
   if (dripTabs.length > 0) {
+    const initialKey = capsuleParam && exclusiveCapsulesData[capsuleParam] ? capsuleParam : 'spiderman';
+    if (capsuleParam) {
+      activateCapsuleTab(initialKey);
+    } else {
+      updateCollectionCursor('spiderman');
+      updateHypeMeter();
+    }
+
     dripTabs.forEach(tab => {
       tab.addEventListener('click', () => {
-        dripTabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-
         const capsuleKey = tab.getAttribute('data-drip');
-        if (capsuleKey && exclusiveCapsulesData[capsuleKey]) {
-          const selectedProducts = exclusiveCapsulesData[capsuleKey];
-          buildDynamicCarouselCards(selectedProducts);
-        }
+        activateCapsuleTab(capsuleKey);
       });
     });
   }
@@ -617,6 +680,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // 4. Fit Match Recommendation Toast
+  const showFitMatchToast = () => {
+    let toast = document.getElementById('fitMatchToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'fitMatchToast';
+      toast.className = 'fit-match-toast';
+      document.body.appendChild(toast);
+    }
+    const score = Math.floor(Math.random() * 10) + 90; // 90% - 99%
+    toast.innerHTML = `
+      <div class="fit-match-toast__header">
+        <i class="fa-solid fa-circle-check" style="color: #00ff88;"></i>
+        <span>Added to Cart</span>
+      </div>
+      <div class="fit-match-toast__score">
+        ✨ Fit Match Recommendation: <strong>${score}% Match</strong> to your vibe
+      </div>
+    `;
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3500);
+  };
+
   const pdpAddToCartBtn = document.getElementById('pdpAddToCartBtn');
 
   if (pdpAddToCartBtn) {
@@ -629,6 +717,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       pdpAddToCartBtn.innerHTML = '<i class="fa-solid fa-check"></i> Added to Cart!';
       pdpAddToCartBtn.style.backgroundColor = 'var(--color-accent-hover)';
+      
+      showFitMatchToast();
+
       setTimeout(() => {
         pdpAddToCartBtn.innerHTML = '<i class="fa-solid fa-bag-shopping"></i> Add to Cart';
         pdpAddToCartBtn.style.backgroundColor = 'var(--color-accent-red)';
