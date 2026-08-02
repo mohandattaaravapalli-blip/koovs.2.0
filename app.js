@@ -55,26 +55,297 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ----------------------------------------------------------
-     3. SEARCH & CART MODAL CONTROLS
+     3. SEARCH, CART, TOAST & INTERACTIVE WIDGET CONTROLS
      ---------------------------------------------------------- */
-  const searchBtn = document.getElementById('searchBtn');
-  if (searchBtn) {
-    searchBtn.addEventListener('click', () => {
-      const query = prompt("Search KOOVS Exclusive Catalog (e.g., 'Spider-Man', 'Sabrina', 'Drake'):");
-      if (query && query.trim() !== '') {
-        alert(`Searching catalog for: "${query.trim()}"`);
-      }
-    });
+  // ── Global Cart System (LocalStorage Persisted) ──
+  let cart = [];
+  try {
+    cart = JSON.parse(localStorage.getItem('koovs_cart') || '[]');
+  } catch (e) {
+    cart = [];
   }
 
   const cartBtn = document.getElementById('cartBtn');
   const cartBadge = document.getElementById('cartBadge');
-  let globalCartCount = 0;
+  const cartDrawer = document.getElementById('cartDrawer');
+  const cartDrawerOverlay = document.getElementById('cartDrawerOverlay');
+  const cartDrawerClose = document.getElementById('cartDrawerClose');
+  const cartItemsList = document.getElementById('cartItemsList');
+  const cartDrawerCount = document.getElementById('cartDrawerCount');
+  const cartSubtotal = document.getElementById('cartSubtotal');
+  const checkoutBtn = document.getElementById('checkoutBtn');
 
-  if (cartBtn) {
-    cartBtn.addEventListener('click', () => {
-      alert(`Shopping Cart: ${cartBadge ? cartBadge.textContent : 0} item(s) selected.`);
+  const saveCart = () => {
+    try {
+      localStorage.setItem('koovs_cart', JSON.stringify(cart));
+    } catch (e) {}
+  };
+
+  const parsePrice = (priceStr) => {
+    if (!priceStr) return 0;
+    const num = parseInt(priceStr.replace(/[^0-9]/g, ''), 10);
+    return isNaN(num) ? 0 : num;
+  };
+
+  const formatPrice = (num) => {
+    return '₹' + num.toLocaleString('en-IN');
+  };
+
+  const updateCartUI = () => {
+    const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+    const subtotal = cart.reduce((sum, item) => sum + (parsePrice(item.price) * item.qty), 0);
+
+    if (cartBadge) {
+      cartBadge.textContent = totalCount;
+      if (totalCount > 0) {
+        cartBadge.style.transform = 'scale(1.3)';
+        setTimeout(() => cartBadge.style.transform = '', 250);
+      }
+    }
+    if (cartDrawerCount) cartDrawerCount.textContent = totalCount;
+    if (cartSubtotal) cartSubtotal.textContent = formatPrice(subtotal);
+
+    if (cartItemsList) {
+      if (cart.length === 0) {
+        cartItemsList.innerHTML = `
+          <div class="cart-drawer__empty">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <p>Your shopping bag is empty.</p>
+          </div>`;
+      } else {
+        cartItemsList.innerHTML = cart.map((item, idx) => `
+          <div class="cart-item">
+            <div class="cart-item__icon">
+              <i class="fa-solid fa-shirt"></i>
+            </div>
+            <div class="cart-item__details">
+              <h4 class="cart-item__title">${item.title}</h4>
+              <span class="cart-item__price">${item.price}</span>
+              <div class="cart-item__controls">
+                <button class="cart-item__qty-btn cart-qty-minus" data-index="${idx}">-</button>
+                <span class="cart-item__qty-val">${item.qty}</span>
+                <button class="cart-item__qty-btn cart-qty-plus" data-index="${idx}">+</button>
+              </div>
+            </div>
+            <button class="cart-item__remove cart-item-remove" data-index="${idx}" aria-label="Remove item">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        `).join('');
+
+        // Attach quantity & remove listeners
+        cartItemsList.querySelectorAll('.cart-qty-minus').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const idx = parseInt(btn.getAttribute('data-index'), 10);
+            if (cart[idx].qty > 1) {
+              cart[idx].qty--;
+            } else {
+              cart.splice(idx, 1);
+            }
+            saveCart();
+            updateCartUI();
+          });
+        });
+
+        cartItemsList.querySelectorAll('.cart-qty-plus').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const idx = parseInt(btn.getAttribute('data-index'), 10);
+            cart[idx].qty++;
+            saveCart();
+            updateCartUI();
+          });
+        });
+
+        cartItemsList.querySelectorAll('.cart-item-remove').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const idx = parseInt(btn.getAttribute('data-index'), 10);
+            cart.splice(idx, 1);
+            saveCart();
+            updateCartUI();
+          });
+        });
+      }
+    }
+  };
+
+  const openCart = () => {
+    if (!cartDrawer) return;
+    updateCartUI();
+    cartDrawer.classList.add('open');
+    cartDrawer.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeCart = () => {
+    if (!cartDrawer) return;
+    cartDrawer.classList.remove('open');
+    cartDrawer.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  if (cartBtn) cartBtn.addEventListener('click', openCart);
+  if (cartDrawerClose) cartDrawerClose.addEventListener('click', closeCart);
+  if (cartDrawerOverlay) cartDrawerOverlay.addEventListener('click', closeCart);
+
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', () => {
+      if (cart.length === 0) {
+        alert('Your shopping bag is empty!');
+        return;
+      }
+      alert('Order Confirmed! Thank you for purchasing from KOOVS.');
+      cart = [];
+      saveCart();
+      updateCartUI();
+      closeCart();
     });
+  }
+
+  // Initial cart UI update
+  updateCartUI();
+
+  // ── Fit Match Toast Function ──
+  const fitToast = document.getElementById('fitToast');
+  const fitToastVibe = document.getElementById('fitToastVibe');
+  let fitToastTimer = null;
+
+  const showFitToast = () => {
+    if (!fitToast) return;
+    const vibe = 90 + Math.floor(Math.random() * 10); // 90% - 99%
+    if (fitToastVibe) fitToastVibe.textContent = `✨ Matches your vibe: ${vibe}%`;
+
+    fitToast.classList.add('show');
+    if (fitToastTimer) clearTimeout(fitToastTimer);
+
+    fitToastTimer = setTimeout(() => {
+      fitToast.classList.remove('show');
+    }, 3200);
+  };
+
+  const addToCart = (product, quantity = 1) => {
+    const existing = cart.find(i => i.id === product.id);
+    if (existing) {
+      existing.qty += quantity;
+    } else {
+      cart.push({
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        tag: product.tag || 'KOOVS EXCLUSIVE',
+        qty: quantity
+      });
+    }
+    saveCart();
+    updateCartUI();
+    showFitToast();
+  };
+
+  // ── Interactive Search Modal ──
+  const searchBtn = document.getElementById('searchBtn');
+  const searchModal = document.getElementById('searchModal');
+  const searchModalOverlay = document.getElementById('searchModalOverlay');
+  const searchModalClose = document.getElementById('searchModalClose');
+  const searchInput = document.getElementById('searchInput');
+  const searchResults = document.getElementById('searchResults');
+
+  const openSearch = () => {
+    if (!searchModal) return;
+    searchModal.classList.add('open');
+    searchModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    if (searchInput) {
+      searchInput.value = '';
+      setTimeout(() => searchInput.focus(), 150);
+    }
+  };
+
+  const closeSearch = () => {
+    if (!searchModal) return;
+    searchModal.classList.remove('open');
+    searchModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  if (searchBtn) searchBtn.addEventListener('click', openSearch);
+  if (searchModalClose) searchModalClose.addEventListener('click', closeSearch);
+  if (searchModalOverlay) searchModalOverlay.addEventListener('click', closeSearch);
+
+  // Filter products for search
+  if (searchInput && searchResults) {
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.trim().toLowerCase();
+      if (!q) {
+        searchResults.innerHTML = '<p class="search-modal__hint">Type to search KOOVS limited drops &amp; essentials...</p>';
+        return;
+      }
+
+      // Gather items from exclusiveCapsulesData
+      let matches = [];
+      Object.keys(exclusiveCapsulesData).forEach(catKey => {
+        exclusiveCapsulesData[catKey].forEach(item => {
+          if (
+            item.title.toLowerCase().includes(q) ||
+            item.tag.toLowerCase().includes(q) ||
+            catKey.toLowerCase().includes(q)
+          ) {
+            matches.push(item);
+          }
+        });
+      });
+
+      if (matches.length === 0) {
+        searchResults.innerHTML = `<p class="search-modal__hint">No drops found matching "${q}".</p>`;
+      } else {
+        searchResults.innerHTML = matches.slice(0, 8).map(item => `
+          <a href="product-detail.html?id=${item.id}" class="search-result-item">
+            <div class="search-result-info">
+              <span class="search-result-tag">${item.tag}</span>
+              <span class="search-result-title">${item.title}</span>
+            </div>
+            <span class="search-result-price">${item.price}</span>
+          </a>
+        `).join('');
+      }
+    });
+  }
+
+  // ── Feeling Lucky Drop Generator ──
+  const feelingLuckyBtn = document.getElementById('feelingLuckyBtn');
+  if (feelingLuckyBtn) {
+    feelingLuckyBtn.addEventListener('click', () => {
+      const collectionKeys = Object.keys(exclusiveCapsulesData);
+      const randomKey = collectionKeys[Math.floor(Math.random() * collectionKeys.length)];
+      const matchingTab = document.querySelector(`.collection-tab[data-drip="${randomKey}"]`);
+      if (matchingTab) {
+        matchingTab.click();
+        matchingTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    });
+  }
+
+  // ── Hype Meter Widget Updates ──
+  const hypeVal = document.getElementById('hypeVal');
+  const hypeBar = document.getElementById('hypeBar');
+  const updateHypeMeter = () => {
+    if (hypeVal && hypeBar) {
+      const pct = 90 + Math.floor(Math.random() * 8); // 90% - 97%
+      hypeVal.textContent = pct + '%';
+      hypeBar.style.width = pct + '%';
+    }
+  };
+  updateHypeMeter();
+
+  // ── Live Activity Widget (Realistic Viewer Counter) ──
+  const liveViewerCount = document.getElementById('liveViewerCount');
+  if (liveViewerCount) {
+    let currentViewers = 24 + Math.floor(Math.random() * 15); // 24-38 initial
+    liveViewerCount.textContent = currentViewers;
+
+    setInterval(() => {
+      const delta = Math.floor(Math.random() * 7) - 3; // -3 to +3
+      currentViewers = Math.max(15, Math.min(60, currentViewers + delta));
+      liveViewerCount.textContent = currentViewers;
+    }, 5000);
   }
 
   /* ----------------------------------------------------------
@@ -621,12 +892,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (pdpAddToCartBtn) {
     pdpAddToCartBtn.addEventListener('click', () => {
-      globalCartCount += currentQty;
-      if (cartBadge) {
-        cartBadge.textContent = globalCartCount;
-        cartBadge.style.transform = 'scale(1.4)';
-        setTimeout(() => cartBadge.style.transform = '', 300);
-      }
+      const activeProduct = (productId && productsDatabase[productId]) ? {
+        id: productId,
+        title: productsDatabase[productId].title,
+        price: productsDatabase[productId].price,
+        tag: productsDatabase[productId].collection
+      } : {
+        id: 'spidey-1',
+        title: 'Web-Slinger Heavy Hoodie',
+        price: '₹2,499',
+        tag: 'SPIDER-MAN: BRAND NEW DAY'
+      };
+
+      addToCart(activeProduct, currentQty);
+
       pdpAddToCartBtn.innerHTML = '<i class="fa-solid fa-check"></i> Added to Cart!';
       pdpAddToCartBtn.style.backgroundColor = 'var(--color-accent-hover)';
       setTimeout(() => {

@@ -324,6 +324,73 @@
     </div>
   </div>
 
+  <!-- ═══════════════════════════════════════════════
+       INTERACTIVE SEARCH MODAL
+  ══════════════════════════════════════════════════ -->
+  <div class="search-modal" id="searchModal" aria-hidden="true">
+    <div class="search-modal__overlay" id="searchModalOverlay"></div>
+    <div class="search-modal__container">
+      <div class="search-modal__header">
+        <div class="search-modal__input-wrap">
+          <i class="fa-solid fa-magnifying-glass search-modal__icon"></i>
+          <input type="text" class="search-modal__input" id="searchInput" placeholder="Search catalog, drops, tees, hoodies..." autocomplete="off" />
+        </div>
+        <button class="search-modal__close" id="searchModalClose" aria-label="Close Search">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="search-modal__results" id="searchResults">
+        <p class="search-modal__hint">Type to search KOOVS limited drops &amp; essentials...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       INTERACTIVE CART SLIDE-OVER DRAWER
+  ══════════════════════════════════════════════════ -->
+  <div class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="cart-drawer__overlay" id="cartDrawerOverlay"></div>
+    <div class="cart-drawer__content">
+      <div class="cart-drawer__header">
+        <div class="cart-drawer__title-wrap">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <h3>YOUR BAG</h3>
+          <span class="cart-drawer__badge" id="cartDrawerCount">0</span>
+        </div>
+        <button class="cart-drawer__close" id="cartDrawerClose" aria-label="Close Cart">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="cart-drawer__items" id="cartItemsList">
+        <div class="cart-drawer__empty">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <p>Your shopping bag is empty.</p>
+        </div>
+      </div>
+      <div class="cart-drawer__footer">
+        <div class="cart-drawer__total-row">
+          <span>Subtotal</span>
+          <span class="cart-drawer__subtotal" id="cartSubtotal">₹0</span>
+        </div>
+        <button class="cart-drawer__checkout-btn" id="checkoutBtn">
+          <span>PROCEED TO CHECKOUT</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       FIT MATCH & ADDED TO CART TOAST
+  ══════════════════════════════════════════════════ -->
+  <div class="fit-toast" id="fitToast" aria-hidden="true">
+    <div class="fit-toast__icon"><i class="fa-solid fa-check"></i></div>
+    <div class="fit-toast__content">
+      <h4 class="fit-toast__title">Added to Cart</h4>
+      <p class="fit-toast__vibe" id="fitToastVibe">✨ Matches your vibe: 96%</p>
+    </div>
+  </div>
+
   <!-- JavaScript -->
   <script src="app.js"></script>
 </body>
