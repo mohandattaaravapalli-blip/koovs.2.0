@@ -1107,20 +1107,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const demoOrderId = document.getElementById('demoOrderId');
 
   if (checkoutItemsList) {
-    // If cart is empty on direct checkout visit, populate 1 demo item for instant testing
-    if (cart.length === 0) {
-      cart = [{
-        id: 'spidey-1',
-        title: 'Spider Hoodie 01',
-        price: '₹2,499',
-        tag: 'SPIDER-MAN: BRAND NEW DAY',
-        qty: 1
-      }];
-      saveCart();
-      updateCartUI();
-    }
-
     const renderCheckoutPage = () => {
+      if (cart.length === 0) {
+        checkoutItemsList.innerHTML = `
+          <div class="cart-drawer__empty" style="padding: 40px 0;">
+            <i class="fa-solid fa-bag-shopping" style="font-size: 36px;"></i>
+            <p>Your shopping bag is empty.</p>
+            <a href="exclusive-drip.html" class="checkout-modal__home-btn" style="margin-top: 12px;">
+              <span>Explore Drops</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>`;
+        if (checkoutSubtotal) checkoutSubtotal.textContent = '₹0';
+        if (checkoutGrandTotal) checkoutGrandTotal.textContent = '₹0';
+        return;
+      }
+
       const subtotal = cart.reduce((sum, item) => sum + (parsePrice(item.price) * item.qty), 0);
 
       checkoutItemsList.innerHTML = cart.map(item => `
@@ -1142,7 +1144,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderCheckoutPage();
 
-    // Payment Cards Radio Selection Toggle
     const paymentCards = document.querySelectorAll('.payment-card');
     paymentCards.forEach(card => {
       card.addEventListener('click', () => {
@@ -1156,6 +1157,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (checkoutForm) {
       checkoutForm.addEventListener('submit', (e) => {
         e.preventDefault();
+        if (cart.length === 0) {
+          alert('Your shopping bag is empty!');
+          return;
+        }
 
         const randomNum = Math.floor(10000 + Math.random() * 90000);
         if (demoOrderId) demoOrderId.textContent = `#KOOVS-${randomNum}`;
@@ -1163,13 +1168,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (orderSuccessModal) {
           orderSuccessModal.classList.add('open');
           orderSuccessModal.setAttribute('aria-hidden', 'false');
-
-          const overlay = orderSuccessModal.querySelector('.checkout-modal__overlay');
-          if (overlay) {
-            overlay.addEventListener('click', () => {
-              window.location.href = 'index.html';
-            });
-          }
         }
 
         cart = [];
