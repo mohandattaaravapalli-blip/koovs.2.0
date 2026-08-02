@@ -493,6 +493,18 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
   };
 
+  // Homepage Feeling Lucky? Hero Button Handler
+  const heroFeelingLuckyBtn = document.getElementById('heroFeelingLuckyBtn');
+  if (heroFeelingLuckyBtn) {
+    heroFeelingLuckyBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const collections = ['spiderman', 'drake', 'cjp', 'sabrina', 'avengers', 'f1', 'nba', 'anime', 'festival', 'archive'];
+      const randomKey = collections[Math.floor(Math.random() * collections.length)];
+      window.location.href = `exclusive-drip.html?drip=${randomKey}`;
+    });
+  }
+
   // Curated Collection Selector Logic (`exclusive-drip.html`)
   const dripTabs = document.querySelectorAll('#exclusiveCollectionBar .collection-tab');
 
@@ -509,6 +521,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     });
+
+    // Auto-select collection if passed via URL query parameter ?drip=...
+    const urlParamsDrip = new URLSearchParams(window.location.search);
+    const targetDripParam = urlParamsDrip.get('drip');
+    if (targetDripParam && exclusiveCapsulesData[targetDripParam]) {
+      const targetTab = document.querySelector(`.collection-tab[data-drip="${targetDripParam}"]`);
+      if (targetTab) {
+        setTimeout(() => {
+          targetTab.click();
+          targetTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }, 120);
+      }
+    }
   }
 
   /* ----------------------------------------------------------
@@ -1104,29 +1129,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const checkoutGrandTotal = document.getElementById('checkoutGrandTotal');
   const checkoutForm = document.getElementById('checkoutForm');
   const orderSuccessModal = document.getElementById('orderSuccessModal');
-  const orderModalOverlay = document.getElementById('orderModalOverlay');
   const demoOrderId = document.getElementById('demoOrderId');
-  const viewOrdersBtn = document.getElementById('viewOrdersBtn');
-
-  // Radio button active class toggle
-  const paymentCards = document.querySelectorAll('.payment-radio-card');
-  paymentCards.forEach(card => {
-    card.addEventListener('click', () => {
-      paymentCards.forEach(c => c.classList.remove('active'));
-      card.classList.add('active');
-      const radio = card.querySelector('input[type="radio"]');
-      if (radio) radio.checked = true;
-    });
-  });
 
   if (checkoutItemsList) {
     const renderCheckoutPage = () => {
       if (cart.length === 0) {
         checkoutItemsList.innerHTML = `
-          <div class="cart-drawer__empty" style="padding: 32px 0;">
-            <i class="fa-solid fa-bag-shopping" style="font-size: 32px; color: var(--color-accent-red);"></i>
-            <p style="font-size: 13px;">Your shopping bag is empty.</p>
-            <a href="exclusive-drip.html" class="order-modal__btn order-modal__btn--primary" style="margin-top: 12px; text-decoration: none;">
+          <div class="cart-drawer__empty" style="padding: 40px 0;">
+            <i class="fa-solid fa-bag-shopping" style="font-size: 36px;"></i>
+            <p>Your shopping bag is empty.</p>
+            <a href="exclusive-drip.html" class="checkout-modal__home-btn" style="margin-top: 12px;">
               <span>Explore Drops</span>
               <i class="fa-solid fa-arrow-right"></i>
             </a>
@@ -1139,15 +1151,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const subtotal = cart.reduce((sum, item) => sum + (parsePrice(item.price) * item.qty), 0);
 
       checkoutItemsList.innerHTML = cart.map(item => `
-        <div class="summary-item">
-          <div class="summary-item__icon">
+        <div class="checkout-item">
+          <div class="checkout-item__icon">
             <i class="fa-solid fa-shirt"></i>
           </div>
-          <div class="summary-item__details">
-            <span class="summary-item__title">${item.title}</span>
-            <span class="summary-item__sub">Qty: ${item.qty} &bull; ${item.tag}</span>
+          <div class="checkout-item__details">
+            <span class="checkout-item__title">${item.title}</span>
+            <span class="checkout-item__sub">Qty: ${item.qty} &bull; ${item.tag}</span>
           </div>
-          <span class="summary-item__price">${formatPrice(parsePrice(item.price) * item.qty)}</span>
+          <span class="checkout-item__price">${formatPrice(parsePrice(item.price) * item.qty)}</span>
         </div>
       `).join('');
 
@@ -1165,8 +1177,8 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
 
-        const randomNum = Math.floor(100000 + Math.random() * 900000);
-        if (demoOrderId) demoOrderId.textContent = `KV-${randomNum}`;
+        const randomNum = Math.floor(10000 + Math.random() * 90000);
+        if (demoOrderId) demoOrderId.textContent = `#KOOVS-${randomNum}`;
 
         if (orderSuccessModal) {
           orderSuccessModal.classList.add('open');
@@ -1176,19 +1188,6 @@ document.addEventListener('DOMContentLoaded', () => {
         cart = [];
         saveCart();
         updateCartUI();
-      });
-    }
-
-    if (orderModalOverlay) {
-      orderModalOverlay.addEventListener('click', () => {
-        window.location.href = 'index.html';
-      });
-    }
-
-    if (viewOrdersBtn) {
-      viewOrdersBtn.addEventListener('click', () => {
-        alert('Demo Order View: Your order is being processed for 3–5 day delivery.');
-        window.location.href = 'index.html';
       });
     }
   }
