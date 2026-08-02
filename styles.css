@@ -2525,20 +2525,23 @@ h1, h2, h3,
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 9px 18px;
-  background: rgba(255, 255, 255, 0.04);
+  padding: 8px 16px;
+  background-color: var(--color-black);
   border: 1px solid var(--color-accent-red);
   border-radius: var(--radius-pill);
   color: var(--color-accent-red);
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  outline: none;
   transition: all var(--transition-fast);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .feeling-lucky-btn:hover {
-  background: var(--color-accent-red);
+  background-color: var(--color-accent-dim);
+  border-color: var(--color-accent-red);
   color: var(--color-white);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px var(--color-accent-glow);
