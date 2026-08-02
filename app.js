@@ -331,17 +331,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ── Hype Meter Widget Updates ──
-  const hypeVal = document.getElementById('hypeVal');
-  const hypeBar = document.getElementById('hypeBar');
-  const updateHypeMeter = () => {
-    if (hypeVal && hypeBar) {
-      const pct = 90 + Math.floor(Math.random() * 8); // 90% - 97%
-      hypeVal.textContent = pct + '%';
-      hypeBar.style.width = pct + '%';
+  // ── Dynamic Independent Hype Meter per Product (80% - 99%) ──
+  const getProductHypePercentage = (prodId) => {
+    if (!prodId) return 80 + Math.floor(Math.random() * 20);
+    let hash = 0;
+    for (let i = 0; i < prodId.length; i++) {
+      hash = (prodId.charCodeAt(i) * 17) + ((hash << 5) - hash);
     }
+    return 80 + (Math.abs(hash) % 20); // 80% to 99%
   };
-  updateHypeMeter();
+
+  const updateHypeMeterForProduct = (prodId) => {
+    const hypeVal = document.getElementById('hypeVal');
+    const hypeBar = document.getElementById('hypeBar');
+    if (!hypeVal || !hypeBar) return;
+    const pct = getProductHypePercentage(prodId);
+    hypeVal.textContent = pct + '%';
+    hypeBar.style.width = pct + '%';
+  };
+  updateHypeMeterForProduct('spidey-1');
 
   // ── Dynamic Live Activity Counter per Product (15 - 60) ──
   const liveViewerCount = document.getElementById('liveViewerCount');
@@ -516,8 +524,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const capsuleKey = tab.getAttribute('data-drip');
         if (capsuleKey && exclusiveCapsulesData[capsuleKey]) {
-          const selectedProducts = exclusiveCapsulesData[capsuleKey];
-          buildDynamicCarouselCards(selectedProducts);
+          currentCapsuleKey = capsuleKey;
+          applyCatalogSortAndFilter();
         }
       });
     });
@@ -770,7 +778,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (spotlightTag && tag) spotlightTag.textContent = tag;
       if (spotlightPrice && price) spotlightPrice.textContent = price;
       if (spotlightCta && id) spotlightCta.href = `product-detail.html?id=${id}`;
-      if (id) updateLiveViewersForProduct(id);
+      if (id) {
+        updateLiveViewersForProduct(id);
+        updateHypeMeterForProduct(id);
+      }
     }
   }
 
@@ -1065,12 +1076,45 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ----------------------------------------------------------
-     11. CATALOG TOOLBAR (SORT BY & FILTER DROPDOWNS)
+     11. CATALOG TOOLBAR (FUNCTIONAL SORT BY & FILTER ENGINE)
      ---------------------------------------------------------- */
   const sortDropdown = document.getElementById('sortDropdown');
   const sortBtn = document.getElementById('sortBtn');
   const filterDropdown = document.getElementById('filterDropdown');
   const filterBtn = document.getElementById('filterBtn');
+
+  let currentCapsuleKey = 'spiderman';
+  let currentSortMode = 'newest';
+  let currentPriceFilter = 'ALL';
+
+  const applyCatalogSortAndFilter = () => {
+    if (!exclusiveCapsulesData[currentCapsuleKey]) return;
+
+    let items = [...exclusiveCapsulesData[currentCapsuleKey]];
+
+    // Apply Price Range Filter
+    if (currentPriceFilter === 'under-2000') {
+      items = items.filter(p => parsePrice(p.price) < 2000);
+    } else if (currentPriceFilter === '2000-2500') {
+      items = items.filter(p => {
+        const pr = parsePrice(p.price);
+        return pr >= 2000 && pr <= 2500;
+      });
+    } else if (currentPriceFilter === 'above-2500') {
+      items = items.filter(p => parsePrice(p.price) > 2500);
+    }
+
+    // Apply Sorting
+    if (currentSortMode === 'low-high') {
+      items.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
+    } else if (currentSortMode === 'high-low') {
+      items.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
+    } else if (currentSortMode === 'featured') {
+      items.sort((a, b) => a.title.localeCompare(b.title));
+    }
+
+    buildDynamicCarouselCards(items);
+  };
 
   if (sortBtn && sortDropdown) {
     sortBtn.addEventListener('click', (e) => {
@@ -1104,6 +1148,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const span = sortBtn.querySelector('span');
         if (span) span.textContent = `Sort: ${opt.textContent.trim()}`;
       }
+      currentSortMode = opt.getAttribute('data-sort') || 'newest';
+      applyCatalogSortAndFilter();
     });
   });
 
@@ -1116,6 +1162,13 @@ document.addEventListener('DOMContentLoaded', () => {
         parent.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
       }
       pill.classList.add('active');
+
+      const filterType = pill.getAttribute('data-filter-type');
+      const val = pill.getAttribute('data-val');
+      if (filterType === 'price' && val) {
+        currentPriceFilter = val;
+      }
+      applyCatalogSortAndFilter();
     });
   });
 
