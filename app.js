@@ -379,6 +379,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 12000);
   }
 
+  // ── Everyday Apparel Hero Card Live Viewer Counter (20 - 60) ──
+  const heroEaViewerCount = document.getElementById('heroEaViewerCount');
+  if (heroEaViewerCount) {
+    let eaViewers = 20 + Math.floor(Math.random() * 41); // 20 to 60 initial
+    heroEaViewerCount.textContent = eaViewers;
+
+    setInterval(() => {
+      const delta = Math.random() > 0.5 ? 1 : -1;
+      eaViewers = Math.max(20, Math.min(60, eaViewers + delta));
+      heroEaViewerCount.textContent = eaViewers;
+    }, 10000);
+  }
+
   /* ----------------------------------------------------------
      4. EXCLUSIVE DRIP — 10 CURATED CAPSULES (10 ITEMS EACH)
      ---------------------------------------------------------- */

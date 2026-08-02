@@ -604,6 +604,14 @@ h1, h2, h3,
   transform: translateX(4px);
 }
 
+.hero-live-activity {
+  padding: 6px 14px;
+  font-size: 11px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-pill);
+}
+
 /* ----------------------------------------------------------
    EVERYDAY APPAREL — REFINED SLIDING HERO BANNER (TOP 60% SCREEN)
    ---------------------------------------------------------- */
