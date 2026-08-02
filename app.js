@@ -343,18 +343,18 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   updateHypeMeter();
 
-  // ── Dynamic Live Activity Counter per Product (12 - 60) ──
+  // ── Dynamic Live Activity Counter per Product (15 - 60) ──
   const liveViewerCount = document.getElementById('liveViewerCount');
   let currentProductViewerId = null;
   let currentViewerNum = 28;
 
   const getProductViewerCount = (prodId) => {
-    if (!prodId) return 12 + Math.floor(Math.random() * 48);
+    if (!prodId) return 15 + Math.floor(Math.random() * 45);
     let hash = 0;
     for (let i = 0; i < prodId.length; i++) {
       hash = prodId.charCodeAt(i) + ((hash << 5) - hash);
     }
-    return 12 + (Math.abs(hash) % 49); // 12 to 60
+    return 15 + (Math.abs(hash) % 46); // 15 to 60
   };
 
   const updateLiveViewersForProduct = (prodId) => {
@@ -374,22 +374,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fluctuate by ±1 every 12 seconds to simulate live traffic
     setInterval(() => {
       const delta = (Math.random() > 0.5 ? 1 : -1);
-      currentViewerNum = Math.max(12, Math.min(60, currentViewerNum + delta));
+      currentViewerNum = Math.max(15, Math.min(60, currentViewerNum + delta));
       liveViewerCount.textContent = currentViewerNum;
     }, 12000);
-  }
-
-  // ── Everyday Apparel Hero Card Live Viewer Counter (20 - 60) ──
-  const heroEaViewerCount = document.getElementById('heroEaViewerCount');
-  if (heroEaViewerCount) {
-    let eaViewers = 20 + Math.floor(Math.random() * 41); // 20 to 60 initial
-    heroEaViewerCount.textContent = eaViewers;
-
-    setInterval(() => {
-      const delta = Math.random() > 0.5 ? 1 : -1;
-      eaViewers = Math.max(20, Math.min(60, eaViewers + delta));
-      heroEaViewerCount.textContent = eaViewers;
-    }, 10000);
   }
 
   /* ----------------------------------------------------------
