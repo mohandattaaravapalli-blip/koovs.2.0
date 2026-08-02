@@ -538,6 +538,14 @@ h1, h2, h3,
   margin-bottom: 16px;
 }
 
+.hero-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-self: flex-start;
+}
+
 .hero-btn {
   display: inline-flex;
   align-items: center;
@@ -566,40 +574,34 @@ h1, h2, h3,
   box-shadow: 0 6px 20px var(--color-accent-glow);
 }
 
-.hero-btn:hover .hero-btn__arrow {
-  transform: translateX(4px);
-}
-
-.hero-card__actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  align-self: flex-start;
-}
-
 .hero-btn-lucky {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
   padding: 9px 18px;
-  background-color: #000000;
-  border: 1px solid #5C0B0A;
+  background-color: var(--color-black);
+  border: 1.5px solid #5C0B0A;
   border-radius: var(--radius-pill);
   color: #5C0B0A;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.04em;
-  cursor: pointer;
-  transition: all var(--transition-fast);
   text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  white-space: nowrap;
 }
 
 .hero-btn-lucky:hover {
   background-color: #5C0B0A;
   color: var(--color-white);
-  transform: scale(1.04);
-  box-shadow: 0 4px 16px rgba(92, 11, 10, 0.4);
+  border-color: #5C0B0A;
+  box-shadow: 0 6px 20px rgba(92, 11, 10, 0.5);
+  transform: translateY(-2px);
+}
+
+.hero-btn:hover .hero-btn__arrow {
+  transform: translateX(4px);
 }
 
 /* ----------------------------------------------------------

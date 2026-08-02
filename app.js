@@ -305,6 +305,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ── Hero Card Feeling Lucky Button ──
+  const heroFeelingLuckyBtn = document.getElementById('heroFeelingLuckyBtn');
+  if (heroFeelingLuckyBtn) {
+    heroFeelingLuckyBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const collectionKeys = Object.keys(exclusiveCapsulesData);
+      const randomKey = collectionKeys[Math.floor(Math.random() * collectionKeys.length)];
+      window.location.href = `exclusive-drip.html?drip=${randomKey}`;
+    });
+  }
+
   // ── Feeling Lucky Drop Generator ──
   const feelingLuckyBtn = document.getElementById('feelingLuckyBtn');
   if (feelingLuckyBtn) {
@@ -493,18 +505,6 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
   };
 
-  // Homepage Feeling Lucky? Hero Button Handler
-  const heroFeelingLuckyBtn = document.getElementById('heroFeelingLuckyBtn');
-  if (heroFeelingLuckyBtn) {
-    heroFeelingLuckyBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const collections = ['spiderman', 'drake', 'cjp', 'sabrina', 'avengers', 'f1', 'nba', 'anime', 'festival', 'archive'];
-      const randomKey = collections[Math.floor(Math.random() * collections.length)];
-      window.location.href = `exclusive-drip.html?drip=${randomKey}`;
-    });
-  }
-
   // Curated Collection Selector Logic (`exclusive-drip.html`)
   const dripTabs = document.querySelectorAll('#exclusiveCollectionBar .collection-tab');
 
@@ -522,16 +522,14 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Auto-select collection if passed via URL query parameter ?drip=...
-    const urlParamsDrip = new URLSearchParams(window.location.search);
-    const targetDripParam = urlParamsDrip.get('drip');
-    if (targetDripParam && exclusiveCapsulesData[targetDripParam]) {
-      const targetTab = document.querySelector(`.collection-tab[data-drip="${targetDripParam}"]`);
-      if (targetTab) {
+    const dripUrlParam = new URLSearchParams(window.location.search).get('drip');
+    if (dripUrlParam && exclusiveCapsulesData[dripUrlParam]) {
+      const initialTab = document.querySelector(`.collection-tab[data-drip="${dripUrlParam}"]`);
+      if (initialTab) {
         setTimeout(() => {
-          targetTab.click();
-          targetTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        }, 120);
+          initialTab.click();
+          initialTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }, 150);
       }
     }
   }
