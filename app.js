@@ -193,25 +193,21 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Your shopping bag is empty!');
         return;
       }
-      alert('Order Confirmed! Thank you for purchasing from KOOVS.');
-      cart = [];
-      saveCart();
-      updateCartUI();
-      closeCart();
+      window.location.href = 'checkout.html';
     });
   }
 
   // Initial cart UI update
   updateCartUI();
 
-  // ── Fit Match Toast Function ──
+  // ── Dynamic "Matches Your Vibe" Toast Function (75% - 99%) ──
   const fitToast = document.getElementById('fitToast');
   const fitToastVibe = document.getElementById('fitToastVibe');
   let fitToastTimer = null;
 
   const showFitToast = () => {
     if (!fitToast) return;
-    const vibe = 90 + Math.floor(Math.random() * 10); // 90% - 99%
+    const vibe = 75 + Math.floor(Math.random() * 25); // 75% - 99% dynamic
     if (fitToastVibe) fitToastVibe.textContent = `✨ Matches your vibe: ${vibe}%`;
 
     fitToast.classList.add('show');
@@ -219,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fitToastTimer = setTimeout(() => {
       fitToast.classList.remove('show');
-    }, 3200);
+    }, 3000);
   };
 
   const addToCart = (product, quantity = 1) => {
@@ -335,17 +331,40 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   updateHypeMeter();
 
-  // ── Live Activity Widget (Realistic Viewer Counter) ──
+  // ── Dynamic Live Activity Counter per Product (12 - 60) ──
   const liveViewerCount = document.getElementById('liveViewerCount');
-  if (liveViewerCount) {
-    let currentViewers = 24 + Math.floor(Math.random() * 15); // 24-38 initial
-    liveViewerCount.textContent = currentViewers;
+  let currentProductViewerId = null;
+  let currentViewerNum = 28;
 
+  const getProductViewerCount = (prodId) => {
+    if (!prodId) return 12 + Math.floor(Math.random() * 48);
+    let hash = 0;
+    for (let i = 0; i < prodId.length; i++) {
+      hash = prodId.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return 12 + (Math.abs(hash) % 49); // 12 to 60
+  };
+
+  const updateLiveViewersForProduct = (prodId) => {
+    if (!liveViewerCount) return;
+    if (currentProductViewerId !== prodId) {
+      currentProductViewerId = prodId;
+      currentViewerNum = getProductViewerCount(prodId);
+      liveViewerCount.textContent = currentViewerNum;
+    }
+  };
+
+  if (liveViewerCount) {
+    const pdpUrlParams = new URLSearchParams(window.location.search);
+    const pdpProdId = pdpUrlParams.get('id') || 'spidey-1';
+    updateLiveViewersForProduct(pdpProdId);
+
+    // Fluctuate by ±1 every 12 seconds to simulate live traffic
     setInterval(() => {
-      const delta = Math.floor(Math.random() * 7) - 3; // -3 to +3
-      currentViewers = Math.max(15, Math.min(60, currentViewers + delta));
-      liveViewerCount.textContent = currentViewers;
-    }, 5000);
+      const delta = (Math.random() > 0.5 ? 1 : -1);
+      currentViewerNum = Math.max(12, Math.min(60, currentViewerNum + delta));
+      liveViewerCount.textContent = currentViewerNum;
+    }, 12000);
   }
 
   /* ----------------------------------------------------------
@@ -728,6 +747,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (spotlightTag && tag) spotlightTag.textContent = tag;
       if (spotlightPrice && price) spotlightPrice.textContent = price;
       if (spotlightCta && id) spotlightCta.href = `product-detail.html?id=${id}`;
+      if (id) updateLiveViewersForProduct(id);
     }
   }
 
@@ -1075,4 +1095,75 @@ document.addEventListener('DOMContentLoaded', () => {
       pill.classList.add('active');
     });
   });
+
+  /* ----------------------------------------------------------
+     12. CHECKOUT PAGE RENDERER & DEMO ORDER FLOW
+     ---------------------------------------------------------- */
+  const checkoutItemsList = document.getElementById('checkoutItemsList');
+  const checkoutSubtotal = document.getElementById('checkoutSubtotal');
+  const checkoutGrandTotal = document.getElementById('checkoutGrandTotal');
+  const checkoutForm = document.getElementById('checkoutForm');
+  const orderSuccessModal = document.getElementById('orderSuccessModal');
+  const demoOrderId = document.getElementById('demoOrderId');
+
+  if (checkoutItemsList) {
+    const renderCheckoutPage = () => {
+      if (cart.length === 0) {
+        checkoutItemsList.innerHTML = `
+          <div class="cart-drawer__empty" style="padding: 40px 0;">
+            <i class="fa-solid fa-bag-shopping" style="font-size: 36px;"></i>
+            <p>Your shopping bag is empty.</p>
+            <a href="exclusive-drip.html" class="checkout-modal__home-btn" style="margin-top: 12px;">
+              <span>Explore Drops</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>`;
+        if (checkoutSubtotal) checkoutSubtotal.textContent = '₹0';
+        if (checkoutGrandTotal) checkoutGrandTotal.textContent = '₹0';
+        return;
+      }
+
+      const subtotal = cart.reduce((sum, item) => sum + (parsePrice(item.price) * item.qty), 0);
+
+      checkoutItemsList.innerHTML = cart.map(item => `
+        <div class="checkout-item">
+          <div class="checkout-item__icon">
+            <i class="fa-solid fa-shirt"></i>
+          </div>
+          <div class="checkout-item__details">
+            <span class="checkout-item__title">${item.title}</span>
+            <span class="checkout-item__sub">Qty: ${item.qty} &bull; ${item.tag}</span>
+          </div>
+          <span class="checkout-item__price">${formatPrice(parsePrice(item.price) * item.qty)}</span>
+        </div>
+      `).join('');
+
+      if (checkoutSubtotal) checkoutSubtotal.textContent = formatPrice(subtotal);
+      if (checkoutGrandTotal) checkoutGrandTotal.textContent = formatPrice(subtotal);
+    };
+
+    renderCheckoutPage();
+
+    if (checkoutForm) {
+      checkoutForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (cart.length === 0) {
+          alert('Your shopping bag is empty!');
+          return;
+        }
+
+        const randomNum = Math.floor(10000 + Math.random() * 90000);
+        if (demoOrderId) demoOrderId.textContent = `#KOOVS-${randomNum}`;
+
+        if (orderSuccessModal) {
+          orderSuccessModal.classList.add('open');
+          orderSuccessModal.setAttribute('aria-hidden', 'false');
+        }
+
+        cart = [];
+        saveCart();
+        updateCartUI();
+      });
+    }
+  }
 });
