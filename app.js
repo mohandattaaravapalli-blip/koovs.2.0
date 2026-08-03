@@ -1242,4 +1242,90 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   }
+
+  /* ----------------------------------------------------------
+     13. SIZE ASSISTANT (KNOW YOUR KOOVS SIZE) LOGIC
+     ---------------------------------------------------------- */
+  const knowSizeBtn = document.getElementById('knowSizeBtn');
+  const sizeModal = document.getElementById('sizeModal');
+  const sizeModalClose = document.getElementById('sizeModalClose');
+  const sizeModalOverlay = document.getElementById('sizeModalOverlay');
+  const usualSizePills = document.querySelectorAll('.usual-size-pill');
+  const usualWaistPills = document.querySelectorAll('.usual-waist-pill');
+  const recommendedSizeLabel = document.getElementById('recommendedSizeLabel');
+  const recommendedSizeDesc = document.getElementById('recommendedSizeDesc');
+  const applyRecommendedSizeBtn = document.getElementById('applyRecommendedSizeBtn');
+
+  const sizeRecommendationsMap = {
+    'XS': { rec: 'XS', desc: 'Fits true to size for a sleek silhouette.' },
+    'S': { rec: 'XS', desc: 'This product has a relaxed fit. We recommend sizing down for the best fit.' },
+    'M': { rec: 'S', desc: 'This product has a relaxed fit. We recommend sizing down for the best fit.' },
+    'L': { rec: 'M', desc: 'This product has a relaxed fit. We recommend sizing down for the best fit.' },
+    'XL': { rec: 'L', desc: 'This product has a relaxed fit. We recommend sizing down for the best fit.' },
+    '28': { rec: 'XS', desc: 'Relaxed waist styling. Fits 28-29 inches comfortably.' },
+    '30': { rec: 'S', desc: 'Relaxed waist styling. Fits 30-31 inches comfortably.' },
+    '32': { rec: 'M', desc: 'Relaxed waist styling. Fits 32-33 inches comfortably.' },
+    '34': { rec: 'L', desc: 'Relaxed waist styling. Fits 34-35 inches comfortably.' },
+    '36': { rec: 'XL', desc: 'Relaxed waist styling. Fits 36-38 inches comfortably.' }
+  };
+
+  let activeRecSize = 'S';
+
+  const updateSizeRecommendation = (key) => {
+    const config = sizeRecommendationsMap[key] || { rec: 'M', desc: 'Fits true to size.' };
+    activeRecSize = config.rec;
+    if (recommendedSizeLabel) recommendedSizeLabel.textContent = config.rec;
+    if (recommendedSizeDesc) recommendedSizeDesc.textContent = `"${config.desc}"`;
+  };
+
+  const openSizeModal = () => {
+    if (!sizeModal) return;
+    sizeModal.classList.add('open');
+    sizeModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeSizeModal = () => {
+    if (!sizeModal) return;
+    sizeModal.classList.remove('open');
+    sizeModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  if (knowSizeBtn) knowSizeBtn.addEventListener('click', openSizeModal);
+  if (sizeModalClose) sizeModalClose.addEventListener('click', closeSizeModal);
+  if (sizeModalOverlay) sizeModalOverlay.addEventListener('click', closeSizeModal);
+
+  usualSizePills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      usualSizePills.forEach(p => p.classList.remove('active'));
+      usualWaistPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const sizeKey = pill.getAttribute('data-size');
+      updateSizeRecommendation(sizeKey);
+    });
+  });
+
+  usualWaistPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      usualWaistPills.forEach(p => p.classList.remove('active'));
+      usualSizePills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const waistKey = pill.getAttribute('data-waist');
+      updateSizeRecommendation(waistKey);
+    });
+  });
+
+  if (applyRecommendedSizeBtn) {
+    applyRecommendedSizeBtn.addEventListener('click', () => {
+      const pdpSizeBtns = document.querySelectorAll('.pdp-size-btn');
+      pdpSizeBtns.forEach(btn => {
+        if (btn.textContent.trim() === activeRecSize) {
+          pdpSizeBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        }
+      });
+      closeSizeModal();
+    });
+  }
 });

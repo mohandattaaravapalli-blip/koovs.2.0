@@ -192,6 +192,9 @@
               <button class="pdp-size-btn">XL</button>
               <button class="pdp-size-btn">XXL</button>
             </div>
+            <button class="pdp-know-size-btn" id="knowSizeBtn">
+              <span>📏 Know Your KOOVS Size</span>
+            </button>
           </div>
 
           <!-- QUANTITY SELECTOR -->
@@ -378,6 +381,59 @@
     <div class="fit-toast__content">
       <h4 class="fit-toast__title">Added to Cart</h4>
       <p class="fit-toast__vibe" id="fitToastVibe">✨ Matches your vibe: 96%</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SIZE ASSISTANT MODAL (KNOW YOUR KOOVS SIZE)
+  ══════════════════════════════════════════════════ -->
+  <div class="size-modal" id="sizeModal" aria-hidden="true">
+    <div class="size-modal__overlay" id="sizeModalOverlay"></div>
+    <div class="size-modal__container">
+      <div class="size-modal__header">
+        <div class="size-modal__title-wrap">
+          <i class="fa-solid fa-ruler-combined size-modal__icon"></i>
+          <h3 class="size-modal__title font-milker">Find Your Perfect KOOVS Fit</h3>
+        </div>
+        <button class="size-modal__close" id="sizeModalClose" aria-label="Close Size Assistant">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="size-modal__body">
+        <p class="size-modal__subtitle">Select your usual brand size or waist measure:</p>
+        
+        <div class="size-modal__pills" id="usualSizePills">
+          <button class="usual-size-pill" data-size="XS">XS</button>
+          <button class="usual-size-pill active" data-size="S">S</button>
+          <button class="usual-size-pill" data-size="M">M</button>
+          <button class="usual-size-pill" data-size="L">L</button>
+          <button class="usual-size-pill" data-size="XL">XL</button>
+        </div>
+
+        <div class="size-modal__waist-row">
+          <span class="size-modal__waist-label">Or Waist Size (inches):</span>
+          <div class="size-modal__pills" id="waistPills">
+            <button class="usual-waist-pill" data-waist="28">28"</button>
+            <button class="usual-waist-pill" data-waist="30">30"</button>
+            <button class="usual-waist-pill" data-waist="32">32"</button>
+            <button class="usual-waist-pill" data-waist="34">34"</button>
+            <button class="usual-waist-pill" data-waist="36">36"</button>
+          </div>
+        </div>
+
+        <!-- RECOMMENDATION BOX -->
+        <div class="size-recommendation-box" id="sizeRecommendationBox">
+          <div class="size-rec__badge"><i class="fa-solid fa-circle-check"></i> RECOMMENDED KOOVS SIZE</div>
+          <h4 class="size-rec__size font-milker" id="recommendedSizeLabel">XS</h4>
+          <p class="size-rec__desc" id="recommendedSizeDesc">
+            "This product has a relaxed fit. We recommend sizing down for the best fit."
+          </p>
+          <button class="size-rec__apply-btn" id="applyRecommendedSizeBtn">
+            <span>Apply Size &amp; Close</span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
