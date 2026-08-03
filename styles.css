@@ -3420,3 +3420,268 @@ h1, h2, h3,
   background: #7a0e0d;
   box-shadow: 0 6px 18px rgba(92, 11, 10, 0.5);
 }
+
+/* ----------------------------------------------------------
+   YOUR PROFILE PAGE & K-COIN LOYALTY CREDITS SYSTEM
+   ---------------------------------------------------------- */
+.profile-page {
+  background-color: var(--color-black);
+  color: var(--color-white);
+  min-height: 100vh;
+}
+
+.profile-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: calc(var(--header-height) + 36px) 32px 80px;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.profile-header-card {
+  background: var(--color-charcoal);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 32px 36px;
+  display: flex;
+  align-items: center;
+  justify-space: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.profile-user-info {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.profile-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5C0B0A, #2b0404);
+  border: 2px solid #5C0B0A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(92, 11, 10, 0.5);
+}
+
+.profile-avatar__initials {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-white);
+  letter-spacing: 0.05em;
+}
+
+.profile-user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-user__name {
+  font-size: 26px;
+  color: var(--color-white);
+  line-height: 1.1;
+}
+
+.profile-user__email {
+  font-size: 13px;
+  color: var(--color-gray-300);
+}
+
+.profile-user__member {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-accent-red);
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+/* TOP-RIGHT KOOVS LOYALTY CREDITS WIDGET */
+.loyalty-widget {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(92, 11, 10, 0.15);
+  border: 1.5px solid #5C0B0A;
+  border-radius: 16px;
+  padding: 14px 22px;
+  box-shadow: 0 10px 30px rgba(92, 11, 10, 0.25);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.loyalty-widget:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 35px rgba(92, 11, 10, 0.4);
+}
+
+/* K-COIN DESIGN (PERFECT CIRCLE, OXBLOOD RED, BLACK "K" LOGO CENTER) */
+.k-coin-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #80100f, #5C0B0A 70%, #300404);
+  border: 2px solid #a81716;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+  position: relative;
+}
+
+.k-coin-symbol {
+  color: #000000;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+.loyalty-widget__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.loyalty-widget__label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-gray-300);
+  text-transform: uppercase;
+}
+
+.loyalty-widget__amount {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-white);
+}
+
+.loyalty-widget__amount small {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-accent-red);
+}
+
+/* PROFILE GRID CARDS */
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+.profile-card {
+  background: var(--color-charcoal);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.profile-card:hover {
+  border-color: rgba(92, 11, 10, 0.6);
+  transform: translateY(-2px);
+}
+
+.profile-card--highlight {
+  background: linear-gradient(145deg, var(--color-charcoal), rgba(92, 11, 10, 0.12));
+  border-color: #5C0B0A;
+}
+
+.profile-card__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-card__icon {
+  font-size: 18px;
+  color: #5C0B0A;
+}
+
+.profile-card__title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-white);
+  letter-spacing: 0.04em;
+}
+
+.profile-card__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.profile-card__list a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  color: var(--color-gray-200);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.profile-card__list a:hover {
+  background: rgba(92, 11, 10, 0.15);
+  border-color: #5C0B0A;
+  color: var(--color-white);
+}
+
+.profile-badge {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  background: var(--color-accent-dim);
+  color: var(--color-accent-red);
+  border-radius: var(--radius-pill);
+}
+
+.rewards-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.rewards-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.rewards-stat__label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-gray-400);
+  text-transform: uppercase;
+}
+
+.rewards-stat__val {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-white);
+  margin-top: 4px;
+}

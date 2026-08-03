@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Profile &amp; K-Coin Loyalty | KOOVS Exclusive</title>
+  <meta name="description" content="Manage your KOOVS account, order history, wishlist, and track your K-Coin loyalty rewards." />
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="profile-page">
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <div class="header__container">
+      
+      <div class="header__left">
+        <button class="header__menu-pill" id="menuBtn" aria-label="Open menu">
+          <i class="fa-solid fa-bars menu-pill__icon"></i>
+          <span class="menu-pill__text">MENU</span>
+        </button>
+      </div>
+
+      <div class="header__center">
+        <a href="index.html" class="header__logo-link" aria-label="KOOVS Home">
+          <img src="assets/images/koovs_official_logo.png" alt="KOOVS Official Logo" class="header__logo-img" />
+        </a>
+      </div>
+
+      <div class="header__right">
+        <button class="header__icon-btn" id="searchBtn" aria-label="Search Catalog">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+
+        <button class="header__icon-btn header__cart-btn" id="cartBtn" aria-label="Shopping Bag">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="header__cart-badge" id="cartBadge">0</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MOBILE MENU DRAWER -->
+  <div class="menu-drawer" id="menuDrawer" aria-hidden="true">
+    <div class="menu-drawer__overlay" id="menuDrawerOverlay"></div>
+    <div class="menu-drawer__content">
+      <div class="menu-drawer__header">
+        <a href="index.html" class="menu-drawer__logo-link" aria-label="KOOVS Home">
+          <img src="assets/images/koovs_official_logo.png" alt="KOOVS Logo" class="menu-drawer__logo" />
+        </a>
+        <button class="menu-drawer__close" id="menuDrawerClose" aria-label="Close menu">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <nav class="menu-drawer__links">
+        <a href="index.html" class="menu-drawer__link">HOME</a>
+        <a href="exclusive-drip.html" class="menu-drawer__link">EXCLUSIVE DRIP</a>
+        <a href="everyday-apparel.html" class="menu-drawer__link highlight-link">EVERYDAY APPAREL</a>
+        <a href="everyday-apparel.html" class="menu-drawer__link">DAILY ESSENTIALS</a>
+        <a href="#" class="menu-drawer__link trigger-ar-modal">AR VIRTUAL FITTING</a>
+      </nav>
+      <div class="menu-drawer__footer">
+        <a href="profile.html" class="menu-drawer__settings-link active">
+          <i class="fa-solid fa-user"></i>
+          <span>Your Profile</span>
+        </a>
+        <a href="#" class="menu-drawer__settings-link" id="settingsBtn">
+          <i class="fa-solid fa-gear"></i>
+          <span>Settings</span>
+        </a>
+        <p class="menu-drawer__brand-tag">TOO ODD TO IGNORE.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN PROFILE CONTAINER -->
+  <main class="profile-main">
+    <div class="profile-container">
+      
+      <!-- PROFILE HEADER & LOYALTY CREDIT WIDGET -->
+      <section class="profile-header-card">
+        <div class="profile-user-info">
+          <div class="profile-avatar">
+            <span class="profile-avatar__initials">MD</span>
+          </div>
+          <div class="profile-user-details">
+            <h1 class="profile-user__name font-milker">Mohan Datta</h1>
+            <p class="profile-user__email">mohan@example.com</p>
+            <span class="profile-user__member">Member since August 2026</span>
+          </div>
+        </div>
+
+        <!-- TOP RIGHT: KOOVS LOYALTY CREDITS WIDGET -->
+        <div class="loyalty-widget" title="KOOVS K-Coin Reward Balance">
+          <div class="k-coin-icon">
+            <span class="k-coin-symbol font-milker">K</span>
+          </div>
+          <div class="loyalty-widget__info">
+            <span class="loyalty-widget__label">K-Coin Balance</span>
+            <span class="loyalty-widget__amount">250 <small>Credits</small></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROFILE GRID CARDS -->
+      <div class="profile-grid">
+        
+        <!-- CARD 1: ORDERS -->
+        <article class="profile-card">
+          <div class="profile-card__header">
+            <i class="fa-solid fa-box profile-card__icon"></i>
+            <h3 class="profile-card__title">Orders</h3>
+          </div>
+          <ul class="profile-card__list">
+            <li><a href="#"><i class="fa-solid fa-bag-shopping"></i> Your Orders <span class="profile-badge">1 Active</span></a></li>
+            <li><a href="#"><i class="fa-solid fa-truck-fast"></i> Track Orders</a></li>
+            <li><a href="#"><i class="fa-solid fa-clock-rotate-left"></i> Order History</a></li>
+          </ul>
+        </article>
+
+        <!-- CARD 2: REWARDS & LOYALTY -->
+        <article class="profile-card profile-card--highlight">
+          <div class="profile-card__header">
+            <i class="fa-solid fa-coins profile-card__icon"></i>
+            <h3 class="profile-card__title">Loyalty Rewards</h3>
+          </div>
+          <div class="rewards-summary">
+            <div class="rewards-stat">
+              <span class="rewards-stat__label">Current Balance</span>
+              <span class="rewards-stat__val font-milker">250</span>
+            </div>
+            <div class="rewards-stat">
+              <span class="rewards-stat__label">Lifetime Earned</span>
+              <span class="rewards-stat__val">1,280</span>
+            </div>
+            <div class="rewards-stat">
+              <span class="rewards-stat__label">Redeemed</span>
+              <span class="rewards-stat__val">1,030</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 3: WISHLIST -->
+        <article class="profile-card">
+          <div class="profile-card__header">
+            <i class="fa-solid fa-heart profile-card__icon"></i>
+            <h3 class="profile-card__title">Wishlist</h3>
+          </div>
+          <ul class="profile-card__list">
+            <li><a href="#"><i class="fa-solid fa-bookmark"></i> Saved Products <span class="profile-badge">4 Items</span></a></li>
+          </ul>
+        </article>
+
+        <!-- CARD 4: SAVED ADDRESSES -->
+        <article class="profile-card">
+          <div class="profile-card__header">
+            <i class="fa-solid fa-location-dot profile-card__icon"></i>
+            <h3 class="profile-card__title">Saved Addresses</h3>
+          </div>
+          <ul class="profile-card__list">
+            <li><a href="#"><i class="fa-solid fa-house"></i> Home Address (Bengaluru)</a></li>
+            <li><a href="#"><i class="fa-solid fa-briefcase"></i> Work Address (Indiranagar)</a></li>
+          </ul>
+        </article>
+
+        <!-- CARD 5: PAYMENT METHODS -->
+        <article class="profile-card">
+          <div class="profile-card__header">
+            <i class="fa-solid fa-credit-card profile-card__icon"></i>
+            <h3 class="profile-card__title">Payment Methods</h3>
+          </div>
+          <ul class="profile-card__list">
+            <li><a href="#"><i class="fa-solid fa-credit-card"></i> Saved Cards <span class="profile-badge">Visa ending 4920</span></a></li>
+          </ul>
+        </article>
+
+        <!-- CARD 6: ACCOUNT & SUPPORT -->
+        <article class="profile-card">
+          <div class="profile-card__header">
+            <i class="fa-solid fa-user-gear profile-card__icon"></i>
+            <h3 class="profile-card__title">Account &amp; Settings</h3>
+          </div>
+          <ul class="profile-card__list">
+            <li><a href="#"><i class="fa-solid fa-pen-to-square"></i> Edit Profile</a></li>
+            <li><a href="#"><i class="fa-solid fa-key"></i> Change Password</a></li>
+            <li><a href="#"><i class="fa-solid fa-bell"></i> Notifications</a></li>
+            <li><a href="#"><i class="fa-solid fa-headset"></i> Help &amp; Support</a></li>
+          </ul>
+        </article>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="inner-page-footer">
+    <div class="inner-page-footer__container">
+      <a href="index.html" aria-label="KOOVS Home">
+        <img src="assets/images/koovs_official_logo.png" alt="KOOVS Official Logo" class="inner-page-footer__logo" />
+      </a>
+    </div>
+  </footer>
+
+  <!-- SEARCH & CART MODALS -->
+  <div class="search-modal" id="searchModal" aria-hidden="true">
+    <div class="search-modal__overlay" id="searchModalOverlay"></div>
+    <div class="search-modal__container">
+      <div class="search-modal__header">
+        <div class="search-input-wrap">
+          <i class="fa-solid fa-magnifying-glass search-input__icon"></i>
+          <input type="text" id="searchInput" placeholder="Search Spider-Man, Drake, Hoodies, Tees..." autocomplete="off" />
+        </div>
+        <button class="search-modal__close" id="searchModalClose" aria-label="Close search"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="search-results-container" id="searchResultsContainer"></div>
+    </div>
+  </div>
+
+  <div class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="cart-drawer__overlay" id="cartDrawerOverlay"></div>
+    <div class="cart-drawer__container">
+      <div class="cart-drawer__header">
+        <h3 class="cart-drawer__title font-milker">SHOPPING BAG</h3>
+        <button class="cart-drawer__close" id="cartDrawerClose"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="cart-drawer__body" id="cartDrawerBody">
+        <div class="cart-drawer__empty">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <p>Your shopping bag is empty.</p>
+        </div>
+      </div>
+      <div class="cart-drawer__footer">
+        <div class="cart-drawer__total-row">
+          <span>Subtotal</span>
+          <span class="cart-drawer__subtotal" id="cartSubtotal">₹0</span>
+        </div>
+        <button class="cart-drawer__checkout-btn" id="checkoutBtn">
+          <span>PROCEED TO CHECKOUT</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
